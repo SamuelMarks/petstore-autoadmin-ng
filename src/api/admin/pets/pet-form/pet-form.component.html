@@ -1,0 +1,94 @@
+
+<div class="form-header">
+<h1>
+    @if (isNewMode()) { Create Pet }
+    @if (isEditMode()) { Edit Pet }
+    @if (isViewMode()) { View Pet }
+</h1>
+
+    <div class="item-actions">
+        @for(action of itemActions; track action.methodName) {
+            <button mat-stroked-button color="accent" (click)="executeItemAction(action)">{{ action.label }}</button>
+        }
+    </div>
+</div>
+
+@if (isEditable) {
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+    <mat-form-field appearance="outline"><mat-label>Id</mat-label><input matInput formControlName="id" type="number"></mat-form-field>
+<mat-expansion-panel><mat-expansion-panel-header><mat-panel-title>Category</mat-panel-title></mat-expansion-panel-header><div formGroupName="category" class="nested-form-group"><mat-form-field appearance="outline"><mat-label>Id</mat-label><input matInput formControlName="id" type="number"></mat-form-field>
+<mat-form-field appearance="outline"><mat-label>Name</mat-label><input matInput formControlName="name" type="text"></mat-form-field></div></mat-expansion-panel>
+<mat-form-field appearance="outline"><mat-label>Name</mat-label><input matInput formControlName="name" type="text">@if (form.get('name')?.hasError('required')) { <mat-error>This field is required.</mat-error> }</mat-form-field>
+<mat-form-field appearance="outline"><mat-label>Photo Urls</mat-label><mat-chip-grid #chipGridPhotoUrls><mat-chip-listbox aria-label="Tag selection">@for(item of photoUrlsSignal(); track item){<mat-chip-row (removed)="removePhotoUrls(item)">{{item}}<button matChipRemove><mat-icon>cancel</mat-icon></button></mat-chip-row>}</mat-chip-listbox></mat-chip-grid><input placeholder="New tag..." [matChipInputFor]="chipGridPhotoUrls" (matChipInputTokenEnd)="addPhotoUrls($event)"/></mat-form-field>
+
+<div class="form-array-container">
+  <div class="form-array-header">
+    <h3>Tags</h3>
+    <button mat-flat-button color="primary" type="button" (click)="addTag()">
+      <mat-icon>add</mat-icon>
+      <span>Add Tag</span>
+    </button>
+  </div>
+  <div formArrayName="tags">
+    @if(tags.controls.length === 0 && form.get('tags')?.hasError('required')) {
+        <mat-error class="form-array-error">At least one Tag is required.</mat-error>
+    }
+    @for(item of tags.controls; track $index) {
+      <mat-expansion-panel [expanded]="true" class="form-array-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Tag {{ $index + 1 }}</mat-panel-title>
+          <button mat-icon-button color="warn" type="button" (click)="removeTag($index)" matTooltip="Remove Tag">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-expansion-panel-header>
+        <div [formGroupName]="$index" class="nested-form-group">
+          <mat-form-field appearance="outline"><mat-label>Id</mat-label><input matInput formControlName="id" type="number"></mat-form-field>
+<mat-form-field appearance="outline"><mat-label>Name</mat-label><input matInput formControlName="name" type="text"></mat-form-field>
+        </div>
+      </mat-expansion-panel>
+    }
+  </div>
+</div>
+<div class="group-container"><label class="mat-body-strong">Status</label><mat-radio-group formControlName="status"><mat-radio-button value="available">available</mat-radio-button>
+<mat-radio-button value="pending">pending</mat-radio-button>
+<mat-radio-button value="sold">sold</mat-radio-button></mat-radio-group><mat-hint>pet status in the store</mat-hint></div>
+    <div class="action-buttons">
+        <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
+        <button mat-flat-button color="primary" type="submit">Save</button>
+    </div>
+</form>
+} @else {
+@if(data(); as item) {
+<dl class="details-list">
+    <div class="detail-item">
+        <dt>Id</dt>
+        <dd>{{ data()?.id }}</dd>
+    </div>
+<div class="detail-item">
+        <dt>Category</dt>
+        <dd>{{ data()?.category }}</dd>
+    </div>
+<div class="detail-item">
+        <dt>Name</dt>
+        <dd>{{ data()?.name }}</dd>
+    </div>
+<div class="detail-item">
+        <dt>Photo Urls</dt>
+        <dd>{{ data()?.photoUrls }}</dd>
+    </div>
+<div class="detail-item">
+        <dt>Tags</dt>
+        <dd>{{ data()?.tags }}</dd>
+    </div>
+<div class="detail-item">
+        <dt>Status</dt>
+        <dd>{{ data()?.status }}</dd>
+    </div>
+</dl>
+} @else {
+    <p>Loading...</p>
+}
+<div class="action-buttons">
+   <button mat-stroked-button type="button" (click)="onCancel()">Back to List</button>
+</div>
+}

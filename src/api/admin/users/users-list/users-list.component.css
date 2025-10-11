@@ -1,0 +1,1 @@
+:host { display: block; padding: 2rem; } .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; } .header-buttons { display: flex; gap: 0.5rem; } .no-data-message { text-align: center; padding: 2rem; color: #666; }
