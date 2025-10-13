@@ -1,77 +1,19 @@
-<div class="form-container">
-  @if (isNewMode()) {
-    <h2>Create new Store</h2>
-  }
-  @if (isEditMode()) {
-    <h2>Edit Store</h2>
-  }
-  @if (isViewMode()) {
-    <h2>View Store</h2>
-  }
-
-  @if (isEditable) {
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="main-form">
-      <mat-form-field appearance="outline">
-        <mat-label>Id</mat-label>
-        <input matInput formControlName="id" type="number"></input></mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Pet Id</mat-label>
-        <input matInput formControlName="petId" type="number"></input></mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Quantity</mat-label>
-        <input matInput formControlName="quantity" type="number"></input></mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Ship Date</mat-label>
-        <input matInput [matDatepicker]="pickershipDate" formControlName="shipDate">
-        <mat-datepicker-toggle matSuffix [for]="pickershipDate"></mat-datepicker-toggle>
-        <mat-datepicker #pickershipDate></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Status</mat-label>
-        <mat-radio-group formControlName="status">
-          <mat-radio-button value="placed">placed</mat-radio-button>
-          <mat-radio-button value="approved">approved</mat-radio-button>
-          <mat-radio-button value="delivered">delivered</mat-radio-button>
-        </mat-radio-group>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Complete</mat-label>
-        <input matInput formControlName="complete" type="checkbox"></input></mat-form-field>
-      <div class="form-actions">
-        <button type="submit" mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-        <button type="button" mat-stroked-button (click)="onCancel()">Cancel</button>
+<div class="container">
+  <h1>{{isEditMode() ? 'Edit' : 'Create'}} {{titleName}}</h1>
+  @if (form) {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+      <mat-form-field appearance="outline"><mat-label>Id</mat-label><input matInput formControlName="id" type="number" ></input></mat-form-field>
+<mat-form-field appearance="outline"><mat-label>Pet Id</mat-label><input matInput formControlName="petId" type="number" ></input></mat-form-field>
+<mat-form-field appearance="outline"><mat-label>Quantity</mat-label><input matInput formControlName="quantity" type="number" ></input></mat-form-field>
+<mat-form-field appearance="outline"><mat-label>Ship Date</mat-label><input matInput [matDatepicker]="pickershipDate" formControlName="shipDate" ><mat-datepicker-toggle matSuffix [for]="pickershipDate"></mat-datepicker-toggle><mat-datepicker #pickershipDate></mat-datepicker></mat-form-field>
+<mat-form-field appearance="outline"><mat-label>Status</mat-label><mat-radio-group formControlName="status" ><mat-radio-button value="placed">placed</mat-radio-button>
+<mat-radio-button value="approved">approved</mat-radio-button>
+<mat-radio-button value="delivered">delivered</mat-radio-button></mat-radio-group></mat-form-field>
+<mat-form-field appearance="outline"><mat-label>Complete</mat-label><input matInput formControlName="complete" type="checkbox" ></input></mat-form-field>
+      <div class="action-buttons">
+        <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">Save</button>
       </div>
     </form>
-  } @else {
-    <mat-form-field appearance="outline">
-      <mat-label>Id</mat-label>
-      <input matInput formControlName="id" type="number"></input></mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Pet Id</mat-label>
-      <input matInput formControlName="petId" type="number"></input></mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Quantity</mat-label>
-      <input matInput formControlName="quantity" type="number"></input></mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Ship Date</mat-label>
-      <input matInput [matDatepicker]="pickershipDate" formControlName="shipDate">
-      <mat-datepicker-toggle matSuffix [for]="pickershipDate"></mat-datepicker-toggle>
-      <mat-datepicker #pickershipDate></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Status</mat-label>
-      <mat-radio-group formControlName="status">
-        <mat-radio-button value="placed">placed</mat-radio-button>
-        <mat-radio-button value="approved">approved</mat-radio-button>
-        <mat-radio-button value="delivered">delivered</mat-radio-button>
-      </mat-radio-group>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Complete</mat-label>
-      <input matInput formControlName="complete" type="checkbox"></input></mat-form-field>
-    <div class="form-actions">
-
-      <button type="button" mat-stroked-button (click)="onCancel()">Back</button>
-    </div>
   }
 </div>

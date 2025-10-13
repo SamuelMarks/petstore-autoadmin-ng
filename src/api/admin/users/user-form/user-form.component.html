@@ -1,27 +1,12 @@
-<div class="form-container">
-  @if (isNewMode()) {
-    <h2>Create new User</h2>
-  }
-  @if (isEditMode()) {
-    <h2>Edit User</h2>
-  }
-  @if (isViewMode()) {
-    <h2>View User</h2>
-  }
-
-  @if (isEditable) {
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="main-form">
-
-      <div class="form-actions">
-        <button type="submit" mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-        <button type="button" mat-stroked-button (click)="onCancel()">Cancel</button>
+<div class="container">
+  <h1>{{isEditMode() ? 'Edit' : 'Create'}} {{titleName}}</h1>
+  @if (form) {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+      
+      <div class="action-buttons">
+        <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">Save</button>
       </div>
     </form>
-  } @else {
-
-    <div class="form-actions">
-
-      <button type="button" mat-stroked-button (click)="onCancel()">Back</button>
-    </div>
   }
 </div>
