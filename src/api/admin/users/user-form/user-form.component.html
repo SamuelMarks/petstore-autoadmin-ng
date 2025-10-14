@@ -2,7 +2,23 @@
   <h1>{{isEditMode() ? 'Edit' : 'Create'}} {{titleName}}</h1>
   @if (form) {
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
-      
+      <dl class="details-list">
+    <dt>Id</dt>
+    <dd>{{ data()?.id }}</dd>
+    <dt>Username</dt>
+    <dd>{{ data()?.username }}</dd>
+    <dt>First Name</dt>
+    <dd>{{ data()?.firstName }}</dd>
+    <dt>Last Name</dt>
+    <dd>{{ data()?.lastName }}</dd>
+    <dt>Email</dt>
+    <dd>{{ data()?.email }}</dd>
+    <dt>Password</dt>
+    <dd>{{ data()?.password }}</dd>
+    <dt>Phone</dt>
+    <dd>{{ data()?.phone }}</dd>
+    <dt>User Status</dt>
+    <dd>{{ data()?.userStatus }}</dd></dl>
       <div class="action-buttons">
         <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
         <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">Save</button>

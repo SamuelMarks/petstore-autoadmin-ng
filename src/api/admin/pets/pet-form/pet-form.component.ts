@@ -1,8 +1,8 @@
 /* eslint-disable */
 import { Component, inject, computed, signal, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { startWith } from 'rxjs/operators';
-import { FormControl, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
+
+
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -25,7 +25,7 @@ export interface PetCategory {
 @Component({
   selector: 'app-pet-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatChipsModule, MatRadioModule, MatInputModule, MatButtonModule, MatIconModule ],
+  imports: [CommonModule, MatFormFieldModule, MatChipsModule, MatRadioModule, MatInputModule, MatButtonModule, MatIconModule ],
   templateUrl: './pet-form.component.html',
   styleUrls: ['./pet-form.component.css']
 })
@@ -37,24 +37,14 @@ export class PetFormComponent {
     
 
     readonly data = signal<Pet | null>(null);
-    readonly isEditable = true;
+    readonly isEditable = false;
 
     readonly id = input<string | number>();
     readonly isEditMode = computed(() => this.isEditable && !!this.id());
     readonly isViewMode = computed(() => !this.isEditable && !!this.id());
     readonly isNewMode = computed(() => !this.id());
 
-    readonly form = new FormGroup({
-        'id': new FormControl<Pet['id'] | null>(null),
-    'category': new FormGroup({
-    'id': new FormControl<PetCategory['id'] | null>(null),
-    'name': new FormControl<PetCategory['name'] | null>(null)
-}),
-    'name': new FormControl<Pet['name']>('', { validators: [Validators.required], nonNullable: true }),
-    'photoUrls': new FormArray([], { validators: [Validators.required] }),
-    'tags': new FormArray([]),
-    'status': new FormControl<Pet['status'] | null>(null)
-    });
+    readonly form = null as any;
     compareById = (o1: { id: unknown }, o2: { id: unknown }): boolean => o1?.id === o2?.id;
 
     private readonly formEffect = effect(() => {
@@ -73,15 +63,7 @@ export class PetFormComponent {
         if (this.isViewMode()) { this.form.disable(); }
     });
     constructor() {}
-    onSubmit(): void {
-        this.form.markAllAsTouched(); if (this.form.invalid) { this.snackBar.open('Please correct the errors on the form.', 'Dismiss', { duration: 3000 }); return; }
-        const formValue = this.form.getRawValue() as Pet;
-        const action$ = this.isEditMode() ? null : this.svc.addPet({ body: formValue });
-        action$?.subscribe({
-            next: () => { this.snackBar.open('Pet saved successfully.', 'Dismiss', { duration: 3000 }); this.router.navigate(['..'], { relativeTo: this.route }); },
-            error: (err) => { console.error('Error saving pet:', err); this.snackBar.open('Error: pet could not be saved.', 'Dismiss', { duration: 5000 }); }
-        });
-    }
+    
     onCancel(): void { this.router.navigate(['..'], { relativeTo: this.route }); }
     onAction(actionName: string): void {
         const id = this.id(); if (!id) return;
