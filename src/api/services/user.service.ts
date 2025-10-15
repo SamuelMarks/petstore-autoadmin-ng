@@ -11,7 +11,7 @@ import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpParams, HttpR
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT, RequestOptions } from "../";
-import { HttpParamsBuilder } from "../utils";
+import { HttpParamsBuilder } from "../";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
@@ -30,7 +30,7 @@ export class UserService {
     createUsersWithListInput(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/createWithList`;
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["post"]>[1] = {
             observe: observe as any,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -46,7 +46,7 @@ export class UserService {
     getUserByName(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["get"]>[1] = {
             observe: observe as any,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -63,7 +63,7 @@ export class UserService {
     updateUser(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["put"]>[1] = {
             observe: observe as any,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -80,7 +80,7 @@ export class UserService {
     deleteUser(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["delete"]>[1] = {
             observe: observe as any,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -104,7 +104,7 @@ export class UserService {
             params = HttpParamsBuilder.addToHttpParams(params, password, 'password');
         }
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["get"]>[1] = {
             observe: observe as any,
             params,
             reportProgress: options?.reportProgress,
@@ -121,7 +121,7 @@ export class UserService {
     logoutUser(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/logout`;
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["get"]>[1] = {
             observe: observe as any,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -137,7 +137,7 @@ export class UserService {
     createUsersWithArrayInput(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/createWithArray`;
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["post"]>[1] = {
             observe: observe as any,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -154,7 +154,7 @@ export class UserService {
     createUser(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user`;
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["post"]>[1] = {
             observe: observe as any,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,

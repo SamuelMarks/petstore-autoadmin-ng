@@ -7,7 +7,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -17,18 +16,18 @@ import { Store } from '../../../models';
 
 
 @Component({
-  selector: 'app-store-form',
-  standalone: true,
-  imports: [CommonModule, MatInputModule, MatButtonModule, MatIconModule ],
-  templateUrl: './store-form.component.html',
-  styleUrls: ['./store-form.component.css']
+    selector: 'app-store-form',
+    standalone: true,
+    imports: [CommonModule, MatButtonModule, MatIconModule],
+    templateUrl: './store-form.component.html',
+    styleUrls: ['./store-form.component.css']
 })
 export class StoreFormComponent {
     private readonly router = inject(Router);
     private readonly route = inject(ActivatedRoute);
     private readonly svc = inject(StoreService);
-    
-    
+
+
 
     readonly data = signal<Store | null>(null);
     readonly isEditable = false;
@@ -44,13 +43,13 @@ export class StoreFormComponent {
     private readonly formEffect = effect(() => {
         const id = this.id();
         const data = this.data();
-        if (id && !data) { this.svc.getOrderById({ orderId: Number(id) }).subscribe(data => this.data.set(data)); }
-        else if (data) { this.form.patchValue(data);  }
+        if (id && !data) { this.svc.getOrderById(id as number).subscribe(data => this.data.set(data)); }
+        else if (data) { this.form.patchValue(data); }
         else if (!id) { this.form.reset(); }
         if (this.isViewMode()) { this.form.disable(); }
     });
-    constructor() {}
-    
+    constructor() { }
+
     onCancel(): void { this.router.navigate(['..'], { relativeTo: this.route }); }
-    
+
 }

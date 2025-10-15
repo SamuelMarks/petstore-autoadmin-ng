@@ -26,87 +26,41 @@ export class UserListComponent {
     readonly totalItems = signal(0);
     readonly isLoading = signal(true);
 
-  
-  
-  );
-}
 
 
 
-const events = [
-      
-      
-      )), }
-    ].filter(Boolean).filter(e => e); // Ensure no empty slots from template
 
-// If there are no events to merge, just load data once.
-if (events.length === 0) {
-    this.loadData().subscribe(data => this.data.set(data));
-    return;
-}
 
-merge(...events).pipe(
-    startWith({}),
-    switchMap(() => this.loadData()),
-).subscribe(data => this.data.set(data));
-  }
-
-loadData() {
-    this.isLoading.set(true);
-    const params: any = {};
-
-}
-    
-    }
-
-return this.svc.(params as any, 'response').pipe(
-    catchError(() => {
-        this.isLoading.set(false);
-        this.snackBar.open('Failed to load data.', 'OK', { duration: 5000 });
-        return of(null);
-    }),
-    map(res => {
-        this.isLoading.set(false);
-        if (res) {
-            this.totalItems.set(res.body?.length ?? 0);
-            return res.body as User[];
-        }
-        return [];
-    })
-);
-  }
-  } @else {
     constructor() {
         this.isLoading.set(false); // No data to load
     }
-}
-
-  
-  }
-
-  
-  }
 
 
-delete (id: number | string): void {
-    if(confirm('Are you sure?')) {
-    this.svc.deleteUser({ username: id as any).subscribe(() => {
 
-        this.snackBar.open('User deleted.', 'OK', { duration: 3000 });
-    });
-}
-  }
-  }
 
-  
-  readonly collectionActions = JSON.parse('[{"label":"Creates list of users with given input array","methodName":"createUsersWithListInput","level":"collection","idParamName":"id"},{"label":"Creates list of users with given input array","methodName":"createUsersWithArrayInput","level":"collection","idParamName":"id"},{"label":"Create user","methodName":"createUser","level":"collection","idParamName":"id"}]');
-executeCollectionAction(action: any): void {
-    if(!confirm(`Are you sure you want to run: ${action.label}?`)) return;
-switch (action.methodName) {
-    case 'createUsersWithListInput': this.svc.createUsersWithListInput({} as any).subscribe({ next: () => { this.snackBar.open('Action successful.', 'OK', { duration: 3000 }); if (this['loadData']) this['loadData']().subscribe((data: any) => this.data.set(data)); }, error: (e) => this.snackBar.open('Action failed.', 'OK', { duration: 5000 }) }); break;
-    case 'createUsersWithArrayInput': this.svc.createUsersWithArrayInput({} as any).subscribe({ next: () => { this.snackBar.open('Action successful.', 'OK', { duration: 3000 }); if (this['loadData']) this['loadData']().subscribe((data: any) => this.data.set(data)); }, error: (e) => this.snackBar.open('Action failed.', 'OK', { duration: 5000 }) }); break;
-    case 'createUser': this.svc.createUser({} as any).subscribe({ next: () => { this.snackBar.open('Action successful.', 'OK', { duration: 3000 }); if (this['loadData']) this['loadData']().subscribe((data: any) => this.data.set(data)); }, error: (e) => this.snackBar.open('Action failed.', 'OK', { duration: 5000 }) }); break;
-    default: console.error('Unknown collection action:', action.methodName);
-}
-}
+
+
+
+    delete(id: number | string): void {
+        if (confirm('Are you sure?')) {
+            this.svc.deleteUser(id).subscribe(() => { // << THIS IS THE FIX
+                // Refresh data after delete
+                this.loadData().subscribe(data => this.data.set(data));
+                this.snackBar.open('User deleted.', 'OK', { duration: 3000 });
+            });
+        }
+    }
+
+
+
+    readonly collectionActions = JSON.parse('[{"label":"Creates list of users with given input array","methodName":"createUsersWithListInput","level":"collection","idParamName":"id","idParamType":"string","parameters":[{"name":"body","in":"body","required":true,"schema":{"type":"array","items":{"$ref":"#/definitions/User"}},"description":"List of user object"}]},{"label":"Creates list of users with given input array","methodName":"createUsersWithArrayInput","level":"collection","idParamName":"id","idParamType":"string","parameters":[{"name":"body","in":"body","required":true,"schema":{"type":"array","items":{"$ref":"#/definitions/User"}},"description":"List of user object"}]},{"label":"Create user","methodName":"createUser","level":"collection","idParamName":"id","idParamType":"string","parameters":[{"name":"body","in":"body","required":true,"schema":{"$ref":"#/definitions/User"},"description":"Created user object"}]}]');
+    executeCollectionAction(action: any): void {
+        if (!confirm(`Are you sure you want to run: ${action.label}?`)) return;
+        switch (action.methodName) {
+            case 'createUsersWithListInput': this.svc.createUsersWithListInput({} as any).subscribe({ next: () => { this.snackBar.open('Action successful.', 'OK', { duration: 3000 }); if (this['loadData']) this['loadData']().subscribe((data: any) => this.data.set(data)); }, error: (e) => this.snackBar.open('Action failed.', 'OK', { duration: 5000 }) }); break;
+            case 'createUsersWithArrayInput': this.svc.createUsersWithArrayInput({} as any).subscribe({ next: () => { this.snackBar.open('Action successful.', 'OK', { duration: 3000 }); if (this['loadData']) this['loadData']().subscribe((data: any) => this.data.set(data)); }, error: (e) => this.snackBar.open('Action failed.', 'OK', { duration: 5000 }) }); break;
+            case 'createUser': this.svc.createUser({} as any).subscribe({ next: () => { this.snackBar.open('Action successful.', 'OK', { duration: 3000 }); if (this['loadData']) this['loadData']().subscribe((data: any) => this.data.set(data)); }, error: (e) => this.snackBar.open('Action failed.', 'OK', { duration: 5000 }) }); break;
+            default: console.error('Unknown collection action:', action.methodName);
+        }
+    }
 }

@@ -11,7 +11,7 @@ import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpParams, HttpR
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT, RequestOptions } from "../";
-import { HttpParamsBuilder } from "../utils";
+import { HttpParamsBuilder } from "../";
 
 @Injectable({ providedIn: "root" })
 export class StoreService {
@@ -31,7 +31,7 @@ export class StoreService {
     getInventory(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/inventory`;
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["get"]>[1] = {
             observe: observe as any,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -47,7 +47,7 @@ export class StoreService {
     placeOrder(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/order`;
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["post"]>[1] = {
             observe: observe as any,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -64,7 +64,7 @@ export class StoreService {
     getOrderById(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["get"]>[1] = {
             observe: observe as any,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -81,7 +81,7 @@ export class StoreService {
     deleteOrder(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
-        const requestOptions: any = {
+        const requestOptions: Parameters<HttpClient["delete"]>[1] = {
             observe: observe as any,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
