@@ -10,28 +10,28 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
         <mat-form-field appearance="outline">
           <mat-label>Id</mat-label>
-          <input matInput formControlName="id" type="number"></input></mat-form-field>
+          <input matInput formControlName="id" type="number"></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Username</mat-label>
-          <input matInput formControlName="username" type="text"></input></mat-form-field>
+          <input matInput formControlName="username" type="text"></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>First Name</mat-label>
-          <input matInput formControlName="firstName" type="text"></input></mat-form-field>
+          <input matInput formControlName="firstName" type="text"></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Last Name</mat-label>
-          <input matInput formControlName="lastName" type="text"></input></mat-form-field>
+          <input matInput formControlName="lastName" type="text"></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
-          <input matInput formControlName="email" type="text"></input></mat-form-field>
+          <input matInput formControlName="email" type="text"></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
-          <input matInput formControlName="password" type="text"></input></mat-form-field>
+          <input matInput formControlName="password" type="text"></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Phone</mat-label>
-          <input matInput formControlName="phone" type="text"></input></mat-form-field>
+          <input matInput formControlName="phone" type="text"></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>User Status</mat-label>
-          <input matInput formControlName="userStatus" type="number"></input></mat-form-field>
+          <input matInput formControlName="userStatus" type="number"></mat-form-field>
         <div class="action-buttons">
           <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
           <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">Save</button>

@@ -10,13 +10,13 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
         <mat-form-field appearance="outline">
           <mat-label>Id</mat-label>
-          <input matInput formControlName="id" type="number"></input></mat-form-field>
+          <input matInput formControlName="id" type="number"></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Pet Id</mat-label>
-          <input matInput formControlName="petId" type="number"></input></mat-form-field>
+          <input matInput formControlName="petId" type="number"></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Quantity</mat-label>
-          <input matInput formControlName="quantity" type="number"></input></mat-form-field>
+          <input matInput formControlName="quantity" type="number"></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Ship Date</mat-label>
           <input matInput [matDatepicker]="pickershipDate" formControlName="shipDate">

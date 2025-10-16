@@ -10,18 +10,18 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
         <mat-form-field appearance="outline">
           <mat-label>Id</mat-label>
-          <input matInput formControlName="id" type="number"></input></mat-form-field>
+          <input matInput formControlName="id" type="number"></mat-form-field>
         <div formGroupName="category" class="nested-form-group"><h3>Category</h3>
           <mat-form-field appearance="outline">
             <mat-label>Id</mat-label>
-            <input matInput formControlName="id" type="number"></input></mat-form-field>
+            <input matInput formControlName="id" type="number"></mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
-            <input matInput formControlName="name" type="text"></input></mat-form-field>
+            <input matInput formControlName="name" type="text"></mat-form-field>
         </div>
         <mat-form-field appearance="outline">
           <mat-label>Name</mat-label>
-          <input matInput formControlName="name" type="text" required></input></mat-form-field>
+          <input matInput formControlName="name" type="text" required></mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Photo Urls</mat-label>
           <mat-chip-grid #chipGridPhotoUrl>
@@ -48,10 +48,10 @@
                 <div class="form-array-item-fields">
                   <mat-form-field appearance="outline">
                     <mat-label>Id</mat-label>
-                    <input matInput formControlName="id" type="number"></input></mat-form-field>
+                    <input matInput formControlName="id" type="number"></mat-form-field>
                   <mat-form-field appearance="outline">
                     <mat-label>Name</mat-label>
-                    <input matInput formControlName="name" type="text"></input></mat-form-field>
+                    <input matInput formControlName="name" type="text"></mat-form-field>
                 </div>
                 <button type="button" mat-icon-button color="warn" (click)="removeTag(i)">
                   <mat-icon>delete</mat-icon>
