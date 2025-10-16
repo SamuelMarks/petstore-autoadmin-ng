@@ -1,24 +1,101 @@
 <div class="container">
-  <h1>{{isEditMode() ? 'Edit' : 'Create'}} {{titleName}}</h1>
-  @if (form) {
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
-      <dl class="details-list">
-    <dt>Id</dt>
-    <dd>{{ data()?.id }}</dd>
-    <dt>Category</dt>
-    <dd>{{ data()?.category }}</dd>
-    <dt>Name</dt>
-    <dd>{{ data()?.name }}</dd>
-    <dt>Photo Urls</dt>
-    <dd>{{ data()?.photoUrls }}</dd>
-    <dt>Tags</dt>
-    <dd>{{ data()?.tags }}</dd>
-    <dt>Status</dt>
-    <dd>{{ data()?.status }}</dd></dl>
-      <div class="action-buttons">
-        <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
-        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">Save</button>
+  @if (isEditable) {
+    <h1>{{ isEditMode() ? 'Edit' : 'Create' }} Pet</h1>
+  } @else {
+    <h1>View Pet</h1>
+  }
+
+  @if (isEditable) {
+    @if (form) {
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+        <mat-form-field appearance="outline">
+          <mat-label>Id</mat-label>
+          <input matInput formControlName="id" type="number"></input></mat-form-field>
+        <div formGroupName="category" class="nested-form-group"><h3>Category</h3>
+          <mat-form-field appearance="outline">
+            <mat-label>Id</mat-label>
+            <input matInput formControlName="id" type="number"></input></mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" type="text"></input></mat-form-field>
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" type="text" required></input></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Photo Urls</mat-label>
+          <mat-chip-grid #chipGridPhotoUrl>
+            @for (item of photoUrls.value; track item) {
+              <mat-chip-row (removed)="removePhotoUrl(item)">{{ item }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+            <input placeholder="New PhotoUrl..." [matChipInputFor]="chipGridPhotoUrl"
+                   (matChipInputTokenEnd)="addPhotoUrl($event)"/></mat-chip-grid>
+        </mat-form-field>
+        <div class="form-array-container">
+          <div class="form-array-header"><h4>Tags</h4>
+            <button type="button" mat-stroked-button (click)="addTag()">
+              <mat-icon>add</mat-icon>
+              Add Tag
+            </button>
+          </div>
+          <div formArrayName="tags">
+            @for (item of tags.controls; track $index; let i = $index) {
+              <div [formGroupName]="i" class="form-array-item">
+                <div class="form-array-item-fields">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Id</mat-label>
+                    <input matInput formControlName="id" type="number"></input></mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" type="text"></input></mat-form-field>
+                </div>
+                <button type="button" mat-icon-button color="warn" (click)="removeTag(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            }</div>
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-radio-group formControlName="status">
+            <mat-radio-button value="available">available</mat-radio-button>
+            <mat-radio-button value="pending">pending</mat-radio-button>
+            <mat-radio-button value="sold">sold</mat-radio-button>
+          </mat-radio-group>
+        </mat-form-field>
+        <div class="action-buttons">
+          <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">Save</button>
+        </div>
+      </form>
+    }
+  } @else {
+    <dl class="details-list">
+      <dt>Id</dt>
+      <dd>{{ data()?.id }}</dd>
+      <dt>Category</dt>
+      <dd>{{ data()?.category }}</dd>
+      <dt>Name</dt>
+      <dd>{{ data()?.name }}</dd>
+      <dt>Photo Urls</dt>
+      <dd>{{ data()?.photoUrls }}</dd>
+      <dt>Tags</dt>
+      <dd>{{ data()?.tags }}</dd>
+      <dt>Status</dt>
+      <dd>{{ data()?.status }}</dd>
+    </dl> <!-- Ensure this block is in the @else for isEditable -->
+    <div class="action-buttons">
+      <div class="item-actions">
+        <button mat-stroked-button type="button" (click)="onAction('uploadFile')">Uploads An Image</button>
+        <button mat-stroked-button type="button" (click)="onAction('updatePetWithForm')">Updates A Pet In The Store With
+          Form Data
+        </button>
       </div>
-    </form>
+      <button mat-stroked-button type="button" (click)="onCancel()">Back to List</button>
+    </div>
   }
 </div>

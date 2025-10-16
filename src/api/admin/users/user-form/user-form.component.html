@@ -1,28 +1,67 @@
 <div class="container">
-  <h1>{{isEditMode() ? 'Edit' : 'Create'}} {{titleName}}</h1>
-  @if (form) {
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
-      <dl class="details-list">
-    <dt>Id</dt>
-    <dd>{{ data()?.id }}</dd>
-    <dt>Username</dt>
-    <dd>{{ data()?.username }}</dd>
-    <dt>First Name</dt>
-    <dd>{{ data()?.firstName }}</dd>
-    <dt>Last Name</dt>
-    <dd>{{ data()?.lastName }}</dd>
-    <dt>Email</dt>
-    <dd>{{ data()?.email }}</dd>
-    <dt>Password</dt>
-    <dd>{{ data()?.password }}</dd>
-    <dt>Phone</dt>
-    <dd>{{ data()?.phone }}</dd>
-    <dt>User Status</dt>
-    <dd>{{ data()?.userStatus }}</dd></dl>
-      <div class="action-buttons">
-        <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
-        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">Save</button>
+  @if (isEditable) {
+    <h1>{{ isEditMode() ? 'Edit' : 'Create' }} User</h1>
+  } @else {
+    <h1>View User</h1>
+  }
+
+  @if (isEditable) {
+    @if (form) {
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+        <mat-form-field appearance="outline">
+          <mat-label>Id</mat-label>
+          <input matInput formControlName="id" type="number"></input></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" type="text"></input></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" type="text"></input></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" type="text"></input></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="text"></input></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" type="text"></input></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Phone</mat-label>
+          <input matInput formControlName="phone" type="text"></input></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>User Status</mat-label>
+          <input matInput formControlName="userStatus" type="number"></input></mat-form-field>
+        <div class="action-buttons">
+          <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">Save</button>
+        </div>
+      </form>
+    }
+  } @else {
+    <dl class="details-list">
+      <dt>Id</dt>
+      <dd>{{ data()?.id }}</dd>
+      <dt>Username</dt>
+      <dd>{{ data()?.username }}</dd>
+      <dt>First Name</dt>
+      <dd>{{ data()?.firstName }}</dd>
+      <dt>Last Name</dt>
+      <dd>{{ data()?.lastName }}</dd>
+      <dt>Email</dt>
+      <dd>{{ data()?.email }}</dd>
+      <dt>Password</dt>
+      <dd>{{ data()?.password }}</dd>
+      <dt>Phone</dt>
+      <dd>{{ data()?.phone }}</dd>
+      <dt>User Status</dt>
+      <dd>{{ data()?.userStatus }}</dd>
+    </dl> <!-- Ensure this block is in the @else for isEditable -->
+    <div class="action-buttons">
+      <div class="item-actions">
+
       </div>
-    </form>
+      <button mat-stroked-button type="button" (click)="onCancel()">Back to List</button>
+    </div>
   }
 </div>

@@ -1,12 +1,63 @@
 <div class="container">
-  <h1>{{isEditMode() ? 'Edit' : 'Create'}} {{titleName}}</h1>
-  @if (form) {
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
-      <dl class="details-list"></dl>
-      <div class="action-buttons">
-        <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
-        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">Save</button>
+  @if (isEditable) {
+    <h1>{{ isEditMode() ? 'Edit' : 'Create' }} Store</h1>
+  } @else {
+    <h1>View Store</h1>
+  }
+
+  @if (isEditable) {
+    @if (form) {
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+        <mat-form-field appearance="outline">
+          <mat-label>Id</mat-label>
+          <input matInput formControlName="id" type="number"></input></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Pet Id</mat-label>
+          <input matInput formControlName="petId" type="number"></input></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Quantity</mat-label>
+          <input matInput formControlName="quantity" type="number"></input></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Ship Date</mat-label>
+          <input matInput [matDatepicker]="pickershipDate" formControlName="shipDate">
+          <mat-datepicker-toggle matSuffix [for]="pickershipDate"></mat-datepicker-toggle>
+          <mat-datepicker #pickershipDate></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-radio-group formControlName="status">
+            <mat-radio-button value="placed">placed</mat-radio-button>
+            <mat-radio-button value="approved">approved</mat-radio-button>
+            <mat-radio-button value="delivered">delivered</mat-radio-button>
+          </mat-radio-group>
+        </mat-form-field>
+        <mat-checkbox formControlName="complete">Complete</mat-checkbox>
+        <div class="action-buttons">
+          <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">Save</button>
+        </div>
+      </form>
+    }
+  } @else {
+    <dl class="details-list">
+      <dt>Id</dt>
+      <dd>{{ data()?.id }}</dd>
+      <dt>Pet Id</dt>
+      <dd>{{ data()?.petId }}</dd>
+      <dt>Quantity</dt>
+      <dd>{{ data()?.quantity }}</dd>
+      <dt>Ship Date</dt>
+      <dd>{{ data()?.shipDate }}</dd>
+      <dt>Status</dt>
+      <dd>{{ data()?.status }}</dd>
+      <dt>Complete</dt>
+      <dd>{{ data()?.complete }}</dd>
+    </dl> <!-- Ensure this block is in the @else for isEditable -->
+    <div class="action-buttons">
+      <div class="item-actions">
+
       </div>
-    </form>
+      <button mat-stroked-button type="button" (click)="onCancel()">Back to List</button>
+    </div>
   }
 </div>
