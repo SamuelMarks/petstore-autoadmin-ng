@@ -16,9 +16,16 @@ import { Component, inject } from "@angular/core";
 export class PetsListComponent {
   private readonly snackBar: MatSnackBar = inject(MatSnackBar);
   private readonly svc: PetService = inject(PetService);
-  readonly collectionActions = JSON.parse('[{"label":"Update an existing pet","methodName":"updatePet","level":"collection","idParamName":"id","idParamType":"string","parameters":[{"name":"body","in":"body","required":true,"schema":{"$ref":"#/definitions/Pet"},"description":"Pet object that needs to be added to the store"}]}]');
+  readonly collectionActions: readonly ResourceAction[] = [{
+    "label": "Update an existing pet",
+    "methodName": "updatePet",
+    "level": "collection",
+    "idParamName": "id",
+    "idParamType": "string",
+    "parameters": []
+  }];
 
-  executeCollectionAction(action: any) {
+  executeCollectionAction(action: ResourceAction) {
     if (!confirm(`Are you sure you want to run: ${action.label}?`)) return;
     switch (action.methodName) {
       case 'updatePet':

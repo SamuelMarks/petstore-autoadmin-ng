@@ -12,6 +12,7 @@ import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT, RequestOptions } from "../";
 import { HttpParamsBuilder } from "../";
+import { Pet } from "../models";
 
 @Injectable({ providedIn: "root" })
 export class PetService {
@@ -40,10 +41,10 @@ export class PetService {
         return this.httpClient.post(url, null, requestOptions);
     }
 
-    addPet(observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    addPet(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    addPet(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    addPet(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    addPet(pet?: Pet, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
+    addPet(pet?: Pet, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
+    addPet(pet?: Pet, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    addPet(pet?: Pet, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet`;
 
         const requestOptions: Parameters<HttpClient["post"]>[1] = {
@@ -53,13 +54,13 @@ export class PetService {
             context: this.createContextWithClientId(options?.context)
         };
 
-        return this.httpClient.post(url, null, requestOptions);
+        return this.httpClient.post(url, pet, requestOptions);
     }
 
-    updatePet(observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    updatePet(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    updatePet(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    updatePet(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    updatePet(pet?: Pet, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
+    updatePet(pet?: Pet, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
+    updatePet(pet?: Pet, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    updatePet(pet?: Pet, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet`;
 
         const requestOptions: Parameters<HttpClient["put"]>[1] = {
@@ -69,7 +70,7 @@ export class PetService {
             context: this.createContextWithClientId(options?.context)
         };
 
-        return this.httpClient.put(url, null, requestOptions);
+        return this.httpClient.put(url, pet, requestOptions);
     }
 
     findPetsByStatus(status: unknown[], observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;

@@ -60,7 +60,7 @@ export class StoreFormComponent {
       return;
     }
     const formValue = this.form.getRawValue() as Order;
-    const action$ = this.isEditMode() ? null : this.svc.placeOrder(formValue);
+    const action$ = this.isEditMode() ? null : this.svc.placeOrder();
     action$?.subscribe({
       next: () => {
         this.snackBar.open('Store saved.', 'OK', { duration: 3000 });

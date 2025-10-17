@@ -2,9 +2,9 @@ import { HttpParams } from "@angular/common/http";
 
 export class HttpParamsBuilder {
     /** Adds a value to HttpParams. Delegates to recursive handler for objects/arrays. */
-    public static addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
+    public static addToHttpParams(httpParams: HttpParams, value: unknown, key?: string): HttpParams {
         const isDate = value instanceof Date;
-        const isObject = typeof value === "object" && !isDate;
+        const isObject = typeof value === "object" && value !== null && !isDate;
 
         if (isObject) {
             return this.addToHttpParamsRecursive(httpParams, value);
@@ -13,7 +13,7 @@ export class HttpParamsBuilder {
         return this.addToHttpParamsRecursive(httpParams, value, key);
     }
 
-    private static addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
+    private static addToHttpParamsRecursive(httpParams: HttpParams, value?: unknown, key?: string): HttpParams {
         if (value == null) {
             return httpParams;
         }
@@ -27,16 +27,21 @@ export class HttpParamsBuilder {
         }
 
         if (typeof value === "object") {
-            return this.handleObject(httpParams, value, key);
+            return this.handleObject(httpParams, value as Record<string, unknown>, key);
         }
 
-        return this.handlePrimitive(httpParams, value, key);
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+            return this.handlePrimitive(httpParams, value, key);
+        }
+
+        // Ignore other types like functions, symbols, etc.
+        return httpParams;
     }
 
     private static handleArray(httpParams: HttpParams, arr: unknown[], key?: string): HttpParams {
-        arr.forEach((element) => {
+        for (const element of arr) {
             httpParams = this.addToHttpParamsRecursive(httpParams, element, key);
-        });
+        }
         return httpParams;
     }
 
@@ -47,11 +52,11 @@ export class HttpParamsBuilder {
         return httpParams.append(key, date.toISOString().substring(0, 10));
     }
 
-    private static handleObject(httpParams: HttpParams, obj: Record<string, any>, key?: string): HttpParams {
-        Object.keys(obj).forEach((prop) => {
+    private static handleObject(httpParams: HttpParams, obj: Record<string, unknown>, key?: string): HttpParams {
+        for (const prop of Object.keys(obj)) {
             const nestedKey = key ? `${key}.${prop}` : prop;
             httpParams = this.addToHttpParamsRecursive(httpParams, obj[prop], nestedKey);
-        });
+        }
         return httpParams;
     }
 

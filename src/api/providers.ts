@@ -12,16 +12,18 @@ import { HTTP_INTERCEPTORS, HttpInterceptor } from "@angular/common/http";
 import { BASE_PATH_DEFAULT, HTTP_INTERCEPTORS_DEFAULT } from "./tokens";
 import { DefaultBaseInterceptor } from "./utils/base-interceptor";
 import { DateInterceptor } from "./utils/date-transformer";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
+import { AuthConfig, OAuthService } from "angular-oauth2-oidc";
+import { AuthHelperService } from "./auth/auth-helper.service";
+import { APP_INITIALIZER, forwardRef } from "@angular/core";
 import { AuthInterceptor } from "./auth/auth.interceptor";
-import { API_KEY_TOKEN } from "./auth/auth.tokens";
 import { BEARER_TOKEN_TOKEN } from "./auth/auth.tokens";
 
 export interface DefaultConfig {
     basePath: string;
     enableDateTransform?: boolean;
-    interceptors?: (new (...args: any[]) => HttpInterceptor)[];
+    interceptors?: (new (...args: never[]) => HttpInterceptor)[];
     apiKey?: string;
-    bearerToken?: string | (() => string);
 }
 
 export function provideDefaultClient(config: DefaultConfig): EnvironmentProviders {
@@ -44,10 +46,12 @@ export function provideDefaultClient(config: DefaultConfig): EnvironmentProvider
         providers.push({ provide: API_KEY_TOKEN, useValue: config.apiKey });
     }
 
-    // Provide the Bearer/OAuth2 token if present
-    if (config.bearerToken) {
-        providers.push({ provide: BEARER_TOKEN_TOKEN, useValue: config.bearerToken });
-    }
+    // Provide the Bearer/OAuth2 token via the AuthHelperService
+    providers.push({
+        provide: BEARER_TOKEN_TOKEN,
+        useFactory: (authHelper: AuthHelperService) => authHelper.getAccessToken.bind(authHelper),
+        deps: [forwardRef(() => AuthHelperService)]
+    });
 
 
     const customInterceptors = config.interceptors?.map(InterceptorClass => new InterceptorClass()) || [];

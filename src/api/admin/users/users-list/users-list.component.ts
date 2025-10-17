@@ -17,9 +17,23 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 export class UsersListComponent {
   private readonly snackBar: MatSnackBar = inject(MatSnackBar);
   private readonly svc: UserService = inject(UserService);
-  readonly collectionActions = JSON.parse('[{"label":"Creates list of users with given input array","methodName":"createUsersWithListInput","level":"collection","idParamName":"id","idParamType":"string","parameters":[{"name":"body","in":"body","required":true,"schema":{"type":"array","items":{"$ref":"#/definitions/User"}},"description":"List of user object"}]},{"label":"Creates list of users with given input array","methodName":"createUsersWithArrayInput","level":"collection","idParamName":"id","idParamType":"string","parameters":[{"name":"body","in":"body","required":true,"schema":{"type":"array","items":{"$ref":"#/definitions/User"}},"description":"List of user object"}]}]');
+  readonly collectionActions: readonly ResourceAction[] = [{
+    "label": "Creates list of users with given input array",
+    "methodName": "createUsersWithListInput",
+    "level": "collection",
+    "idParamName": "id",
+    "idParamType": "string",
+    "parameters": []
+  }, {
+    "label": "Creates list of users with given input array",
+    "methodName": "createUsersWithArrayInput",
+    "level": "collection",
+    "idParamName": "id",
+    "idParamType": "string",
+    "parameters": []
+  }];
 
-  executeCollectionAction(action: any) {
+  executeCollectionAction(action: ResourceAction) {
     if (!confirm(`Are you sure you want to run: ${action.label}?`)) return;
     switch (action.methodName) {
       case 'createUsersWithListInput':

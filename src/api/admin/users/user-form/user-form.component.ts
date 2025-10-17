@@ -59,7 +59,7 @@ export class UserFormComponent {
       return;
     }
     const formValue = this.form.getRawValue() as User;
-    const action$ = this.isEditMode() ? this.svc.updateUser(this.id() as string, formValue) : this.svc.createUser(formValue);
+    const action$ = this.isEditMode() ? this.svc.updateUser(this.id() as string) : this.svc.createUser();
     action$?.subscribe({
       next: () => {
         this.snackBar.open('User saved.', 'OK', { duration: 3000 });

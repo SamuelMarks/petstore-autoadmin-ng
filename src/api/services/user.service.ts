@@ -12,6 +12,7 @@ import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT, RequestOptions } from "../";
 import { HttpParamsBuilder } from "../";
+import { User } from "../models";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
@@ -24,10 +25,10 @@ export class UserService {
         return context.set(this.clientContextToken, 'default');
     }
 
-    createUsersWithListInput(observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    createUsersWithListInput(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    createUsersWithListInput(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    createUsersWithListInput(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    createUsersWithListInput(requestBody?: User[], observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
+    createUsersWithListInput(requestBody?: User[], observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
+    createUsersWithListInput(requestBody?: User[], observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    createUsersWithListInput(requestBody?: User[], observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/createWithList`;
 
         const requestOptions: Parameters<HttpClient["post"]>[1] = {
@@ -37,7 +38,7 @@ export class UserService {
             context: this.createContextWithClientId(options?.context)
         };
 
-        return this.httpClient.post(url, null, requestOptions);
+        return this.httpClient.post(url, requestBody, requestOptions);
     }
 
     getUserByName(username: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
@@ -56,11 +57,11 @@ export class UserService {
         return this.httpClient.get(url, requestOptions);
     }
 
-    updateUser(username: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    updateUser(username: string, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    updateUser(username: string, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    updateUser(username: string, user?: User, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
+    updateUser(username: string, user?: User, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
+    updateUser(username: string, user?: User, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
     /** This can only be done by the logged in user. */
-    updateUser(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    updateUser(username: string, user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
         const requestOptions: Parameters<HttpClient["put"]>[1] = {
@@ -70,7 +71,7 @@ export class UserService {
             context: this.createContextWithClientId(options?.context)
         };
 
-        return this.httpClient.put(url, null, requestOptions);
+        return this.httpClient.put(url, user, requestOptions);
     }
 
     deleteUser(username: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
@@ -131,10 +132,10 @@ export class UserService {
         return this.httpClient.get(url, requestOptions);
     }
 
-    createUsersWithArrayInput(observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    createUsersWithArrayInput(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    createUsersWithArrayInput(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    createUsersWithArrayInput(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    createUsersWithArrayInput(requestBody?: User[], observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
+    createUsersWithArrayInput(requestBody?: User[], observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
+    createUsersWithArrayInput(requestBody?: User[], observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    createUsersWithArrayInput(requestBody?: User[], observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/createWithArray`;
 
         const requestOptions: Parameters<HttpClient["post"]>[1] = {
@@ -144,14 +145,14 @@ export class UserService {
             context: this.createContextWithClientId(options?.context)
         };
 
-        return this.httpClient.post(url, null, requestOptions);
+        return this.httpClient.post(url, requestBody, requestOptions);
     }
 
-    createUser(observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    createUser(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    createUser(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    createUser(user?: User, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
+    createUser(user?: User, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
+    createUser(user?: User, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
     /** This can only be done by the logged in user. */
-    createUser(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    createUser(user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user`;
 
         const requestOptions: Parameters<HttpClient["post"]>[1] = {
@@ -161,6 +162,6 @@ export class UserService {
             context: this.createContextWithClientId(options?.context)
         };
 
-        return this.httpClient.post(url, null, requestOptions);
+        return this.httpClient.post(url, user, requestOptions);
     }
 }

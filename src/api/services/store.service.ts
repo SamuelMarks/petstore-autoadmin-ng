@@ -12,6 +12,7 @@ import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT, RequestOptions } from "../";
 import { HttpParamsBuilder } from "../";
+import { Order } from "../models";
 
 @Injectable({ providedIn: "root" })
 export class StoreService {
@@ -41,10 +42,10 @@ export class StoreService {
         return this.httpClient.get(url, requestOptions);
     }
 
-    placeOrder(observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    placeOrder(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    placeOrder(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    placeOrder(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    placeOrder(order?: Order, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
+    placeOrder(order?: Order, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
+    placeOrder(order?: Order, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    placeOrder(order?: Order, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/order`;
 
         const requestOptions: Parameters<HttpClient["post"]>[1] = {
@@ -54,7 +55,7 @@ export class StoreService {
             context: this.createContextWithClientId(options?.context)
         };
 
-        return this.httpClient.post(url, null, requestOptions);
+        return this.httpClient.post(url, order, requestOptions);
     }
 
     getOrderById(orderId: number, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;

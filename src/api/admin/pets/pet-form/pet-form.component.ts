@@ -75,7 +75,7 @@ export class PetFormComponent {
       return;
     }
     const formValue = this.form.getRawValue() as Pet;
-    const action$ = this.isEditMode() ? null : this.svc.addPet(formValue);
+    const action$ = this.isEditMode() ? null : this.svc.addPet();
     action$?.subscribe({
       next: () => {
         this.snackBar.open('Pet saved.', 'OK', { duration: 3000 });
