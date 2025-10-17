@@ -14,12 +14,14 @@ import { DefaultBaseInterceptor } from "./utils/base-interceptor";
 import { DateInterceptor } from "./utils/date-transformer";
 import { AuthInterceptor } from "./auth/auth.interceptor";
 import { API_KEY_TOKEN } from "./auth/auth.tokens";
+import { BEARER_TOKEN_TOKEN } from "./auth/auth.tokens";
 
 export interface DefaultConfig {
     basePath: string;
     enableDateTransform?: boolean;
     interceptors?: (new (...args: any[]) => HttpInterceptor)[];
     apiKey?: string;
+    bearerToken?: string | (() => string);
 }
 
 export function provideDefaultClient(config: DefaultConfig): EnvironmentProviders {
@@ -40,6 +42,11 @@ export function provideDefaultClient(config: DefaultConfig): EnvironmentProvider
     // Provide the API key if present
     if (config.apiKey) {
         providers.push({ provide: API_KEY_TOKEN, useValue: config.apiKey });
+    }
+
+    // Provide the Bearer/OAuth2 token if present
+    if (config.bearerToken) {
+        providers.push({ provide: BEARER_TOKEN_TOKEN, useValue: config.bearerToken });
     }
 
 
