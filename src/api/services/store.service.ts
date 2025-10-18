@@ -29,7 +29,7 @@ export class StoreService {
     getInventory(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     getInventory(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
     /** Returns a map of status codes to quantities */
-    getInventory(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    getInventory(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/store/inventory`;
 
         const requestOptions: Parameters<HttpClient["get"]>[1] = {
@@ -45,7 +45,7 @@ export class StoreService {
     placeOrder(order?: Order, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
     placeOrder(order?: Order, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     placeOrder(order?: Order, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    placeOrder(order?: Order, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    placeOrder(order?: Order, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/store/order`;
 
         const requestOptions: Parameters<HttpClient["post"]>[1] = {
@@ -62,7 +62,7 @@ export class StoreService {
     getOrderById(orderId: number, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     getOrderById(orderId: number, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
     /** For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions */
-    getOrderById(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    getOrderById(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
         const requestOptions: Parameters<HttpClient["get"]>[1] = {
@@ -79,7 +79,7 @@ export class StoreService {
     deleteOrder(orderId: number, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     deleteOrder(orderId: number, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
     /** For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors */
-    deleteOrder(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    deleteOrder(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
         const requestOptions: Parameters<HttpClient["delete"]>[1] = {

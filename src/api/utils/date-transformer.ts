@@ -4,9 +4,9 @@ import { Observable, map } from "rxjs";
 
 export const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/;
 
-export function transformDates(obj: any): any {
+export function transformDates(obj: unknown): unknown {
 
-    if (obj === null || obj === undefined || typeof obj !== 'object') {
+    if (obj === null || typeof obj !== 'object') {
         return obj;
     }
 
@@ -18,25 +18,21 @@ export function transformDates(obj: any): any {
         return obj.map(item => transformDates(item));
     }
 
-    if (typeof obj === 'object') {
-        const transformed: any = {};
-        for (const key of Object.keys(obj)) {
-            const value = obj[key];
-            if (typeof value === 'string' && ISO_DATE_REGEX.test(value)) {
-                transformed[key] = new Date(value);
-            } else {
-                transformed[key] = transformDates(value);
-            }
+    const transformed: { [key: string]: unknown } = {};
+    for (const key of Object.keys(obj)) {
+        const value = (obj as Record<string, unknown>)[key];
+        if (typeof value === 'string' && ISO_DATE_REGEX.test(value)) {
+            transformed[key] = new Date(value);
+        } else {
+            transformed[key] = transformDates(value);
         }
-        return transformed;
     }
-
-    return obj;
+    return transformed;
 }
 
 @Injectable()
 export class DateInterceptor implements HttpInterceptor {
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
         return next.handle(req).pipe(
             map(event => {

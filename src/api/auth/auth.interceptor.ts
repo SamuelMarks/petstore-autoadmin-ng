@@ -8,7 +8,7 @@ export class AuthInterceptor implements HttpInterceptor {
     readonly apiKey = inject(API_KEY_TOKEN, { optional: true });
     readonly bearerToken = inject(BEARER_TOKEN_TOKEN, { optional: true });
 
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         let authReq = req; if (this.apiKey) {
             authReq = authReq.clone({ setHeaders: { 'api_key': this.apiKey } });
         } else if (this.bearerToken) {

@@ -17,7 +17,7 @@ export class DefaultBaseInterceptor implements HttpInterceptor {
     private readonly httpInterceptors: HttpInterceptor[] = inject(HTTP_INTERCEPTORS_DEFAULT);
     private readonly clientContextToken: HttpContextToken<string> = CLIENT_CONTEXT_TOKEN_DEFAULT;
 
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
         // Check if this request belongs to this client using HttpContext
         if (!req.context.has(this.clientContextToken)) {
@@ -29,8 +29,8 @@ export class DefaultBaseInterceptor implements HttpInterceptor {
         let handler = next;
 
         handler = this.httpInterceptors.reduceRight(
-            (next, interceptor) => ({
-                handle: (request: HttpRequest<any>) => interceptor.intercept(request, next)
+            (nextHandler, interceptor) => ({
+                handle: (request: HttpRequest<unknown>) => interceptor.intercept(request, nextHandler)
             }),
             handler
         );

@@ -28,7 +28,7 @@ export class UserService {
     createUsersWithListInput(requestBody?: User[], observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
     createUsersWithListInput(requestBody?: User[], observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     createUsersWithListInput(requestBody?: User[], observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    createUsersWithListInput(requestBody?: User[], observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    createUsersWithListInput(requestBody?: User[], observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/user/createWithList`;
 
         const requestOptions: Parameters<HttpClient["post"]>[1] = {
@@ -44,7 +44,7 @@ export class UserService {
     getUserByName(username: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
     getUserByName(username: string, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     getUserByName(username: string, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    getUserByName(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    getUserByName(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/user/${username}`;
 
         const requestOptions: Parameters<HttpClient["get"]>[1] = {
@@ -61,7 +61,7 @@ export class UserService {
     updateUser(username: string, user?: User, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     updateUser(username: string, user?: User, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
     /** This can only be done by the logged in user. */
-    updateUser(username: string, user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    updateUser(username: string, user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/user/${username}`;
 
         const requestOptions: Parameters<HttpClient["put"]>[1] = {
@@ -78,7 +78,7 @@ export class UserService {
     deleteUser(username: string, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     deleteUser(username: string, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
     /** This can only be done by the logged in user. */
-    deleteUser(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    deleteUser(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/user/${username}`;
 
         const requestOptions: Parameters<HttpClient["delete"]>[1] = {
@@ -94,7 +94,7 @@ export class UserService {
     loginUser(username: string, password: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
     loginUser(username: string, password: string, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     loginUser(username: string, password: string, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    loginUser(username: string, password: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    loginUser(username: string, password: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/user/login`;
 
         let params = new HttpParams();
@@ -119,7 +119,7 @@ export class UserService {
     logoutUser(observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
     logoutUser(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     logoutUser(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    logoutUser(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    logoutUser(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/user/logout`;
 
         const requestOptions: Parameters<HttpClient["get"]>[1] = {
@@ -135,7 +135,7 @@ export class UserService {
     createUsersWithArrayInput(requestBody?: User[], observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
     createUsersWithArrayInput(requestBody?: User[], observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     createUsersWithArrayInput(requestBody?: User[], observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    createUsersWithArrayInput(requestBody?: User[], observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    createUsersWithArrayInput(requestBody?: User[], observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/user/createWithArray`;
 
         const requestOptions: Parameters<HttpClient["post"]>[1] = {
@@ -152,7 +152,7 @@ export class UserService {
     createUser(user?: User, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
     createUser(user?: User, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
     /** This can only be done by the logged in user. */
-    createUser(user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    createUser(user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<unknown> {
         const url = `${this.basePath}/user`;
 
         const requestOptions: Parameters<HttpClient["post"]>[1] = {
