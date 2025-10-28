@@ -4,177 +4,212 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="admin-form-fields">
       <mat-form-field>
-        <mat-label>Id</mat-label>
-        <input matInput formControlName="id" type="number">
-        @if (form.get('id')?.hasError('required')) {
-          <mat-error>This field is required.</mat-error>
-        } @if (form.get('id')?.hasError('minlength')) {
-        <mat-error>Must be at least undefined characters long.</mat-error>
-      } @if (form.get('id')?.hasError('maxlength')) {
-        <mat-error>Cannot exceed undefined characters.</mat-error>
-      } @if (form.get('id')?.hasError('pattern')) {
-        <mat-error>Invalid format.</mat-error>
-      } @if (form.get('id')?.hasError('email')) {
-        <mat-error>Please enter a valid email address.</mat-error>
-      } @if (form.get('id')?.hasError('exclusiveMinimum')) {
-        <mat-error>Value must be greater than the minimum.</mat-error>
-      } @if (form.get('id')?.hasError('exclusiveMaximum')) {
-        <mat-error>Value must be less than the maximum.</mat-error>
-      } @if (form.get('id')?.hasError('multipleOf')) {
-        <mat-error>Value is not a valid multiple.</mat-error>
-      }
-      </mat-form-field>
+  <mat-label>Id</mat-label>
+  <input matInput formControlName="id" type="number">
+  @if (form.get('id')?.hasError('required')) {
+    <mat-error>This field is required.</mat-error>
+  }
+  @if (form.get('id')?.hasError('minlength')) {
+    <mat-error>Must be at least undefined characters long.</mat-error>
+  }
+  @if (form.get('id')?.hasError('maxlength')) {
+    <mat-error>Cannot exceed undefined characters.</mat-error>
+  }
+  @if (form.get('id')?.hasError('pattern')) {
+    <mat-error>Invalid format.</mat-error>
+  }
+  @if (form.get('id')?.hasError('email')) {
+      <mat-error>Please enter a valid email address.</mat-error>
+    }
+  @if (form.get('id')?.hasError('exclusiveMinimum')) {
+    <mat-error>Value must be greater than the minimum.</mat-error>
+  }
+  @if (form.get('id')?.hasError('exclusiveMaximum')) {
+    <mat-error>Value must be less than the maximum.</mat-error>
+  }
+  @if (form.get('id')?.hasError('multipleOf')) {
+    <mat-error>Value is not a valid multiple.</mat-error>
+  }
+</mat-form-field>
 
 
-      <div formGroupName="category" class="admin-form-group"><h3>Category</h3>
-        <mat-form-field>
-          <mat-label>Id</mat-label>
-          <input matInput formControlName="id" type="number">
-          @if (form.get('id')?.hasError('required')) {
-            <mat-error>This field is required.</mat-error>
-          } @if (form.get('id')?.hasError('minlength')) {
-          <mat-error>Must be at least undefined characters long.</mat-error>
-        } @if (form.get('id')?.hasError('maxlength')) {
-          <mat-error>Cannot exceed undefined characters.</mat-error>
-        } @if (form.get('id')?.hasError('pattern')) {
-          <mat-error>Invalid format.</mat-error>
-        } @if (form.get('id')?.hasError('email')) {
-          <mat-error>Please enter a valid email address.</mat-error>
-        } @if (form.get('id')?.hasError('exclusiveMinimum')) {
-          <mat-error>Value must be greater than the minimum.</mat-error>
-        } @if (form.get('id')?.hasError('exclusiveMaximum')) {
-          <mat-error>Value must be less than the maximum.</mat-error>
-        } @if (form.get('id')?.hasError('multipleOf')) {
-          <mat-error>Value is not a valid multiple.</mat-error>
-        }
-        </mat-form-field>
+<div formGroupName="category" class="admin-form-group"><h3>Category</h3><mat-form-field>
+  <mat-label>Id</mat-label>
+  <input matInput formControlName="id" type="number">
+  @if (form.get('id')?.hasError('required')) {
+    <mat-error>This field is required.</mat-error>
+  }
+  @if (form.get('id')?.hasError('minlength')) {
+    <mat-error>Must be at least undefined characters long.</mat-error>
+  }
+  @if (form.get('id')?.hasError('maxlength')) {
+    <mat-error>Cannot exceed undefined characters.</mat-error>
+  }
+  @if (form.get('id')?.hasError('pattern')) {
+    <mat-error>Invalid format.</mat-error>
+  }
+  @if (form.get('id')?.hasError('email')) {
+      <mat-error>Please enter a valid email address.</mat-error>
+    }
+  @if (form.get('id')?.hasError('exclusiveMinimum')) {
+    <mat-error>Value must be greater than the minimum.</mat-error>
+  }
+  @if (form.get('id')?.hasError('exclusiveMaximum')) {
+    <mat-error>Value must be less than the maximum.</mat-error>
+  }
+  @if (form.get('id')?.hasError('multipleOf')) {
+    <mat-error>Value is not a valid multiple.</mat-error>
+  }
+</mat-form-field>
 
 
-        <mat-form-field>
-          <mat-label>Name</mat-label>
-          <input matInput formControlName="name" type="text">
-          @if (form.get('name')?.hasError('required')) {
-            <mat-error>This field is required.</mat-error>
-          } @if (form.get('name')?.hasError('minlength')) {
-          <mat-error>Must be at least undefined characters long.</mat-error>
-        } @if (form.get('name')?.hasError('maxlength')) {
-          <mat-error>Cannot exceed undefined characters.</mat-error>
-        } @if (form.get('name')?.hasError('pattern')) {
-          <mat-error>Invalid format.</mat-error>
-        } @if (form.get('name')?.hasError('email')) {
-          <mat-error>Please enter a valid email address.</mat-error>
-        } @if (form.get('name')?.hasError('exclusiveMinimum')) {
-          <mat-error>Value must be greater than the minimum.</mat-error>
-        } @if (form.get('name')?.hasError('exclusiveMaximum')) {
-          <mat-error>Value must be less than the maximum.</mat-error>
-        } @if (form.get('name')?.hasError('multipleOf')) {
-          <mat-error>Value is not a valid multiple.</mat-error>
-        }
-        </mat-form-field>
-      </div>
+<mat-form-field>
+  <mat-label>Name</mat-label>
+  <input matInput formControlName="name" type="text">
+  @if (form.get('name')?.hasError('required')) {
+    <mat-error>This field is required.</mat-error>
+  }
+  @if (form.get('name')?.hasError('minlength')) {
+    <mat-error>Must be at least undefined characters long.</mat-error>
+  }
+  @if (form.get('name')?.hasError('maxlength')) {
+    <mat-error>Cannot exceed undefined characters.</mat-error>
+  }
+  @if (form.get('name')?.hasError('pattern')) {
+    <mat-error>Invalid format.</mat-error>
+  }
+  @if (form.get('name')?.hasError('email')) {
+      <mat-error>Please enter a valid email address.</mat-error>
+    }
+  @if (form.get('name')?.hasError('exclusiveMinimum')) {
+    <mat-error>Value must be greater than the minimum.</mat-error>
+  }
+  @if (form.get('name')?.hasError('exclusiveMaximum')) {
+    <mat-error>Value must be less than the maximum.</mat-error>
+  }
+  @if (form.get('name')?.hasError('multipleOf')) {
+    <mat-error>Value is not a valid multiple.</mat-error>
+  }
+</mat-form-field>
+</div>
 
-      <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" type="text">
-        @if (form.get('name')?.hasError('required')) {
-          <mat-error>This field is required.</mat-error>
-        } @if (form.get('name')?.hasError('minlength')) {
-        <mat-error>Must be at least undefined characters long.</mat-error>
-      } @if (form.get('name')?.hasError('maxlength')) {
-        <mat-error>Cannot exceed undefined characters.</mat-error>
-      } @if (form.get('name')?.hasError('pattern')) {
-        <mat-error>Invalid format.</mat-error>
-      } @if (form.get('name')?.hasError('email')) {
-        <mat-error>Please enter a valid email address.</mat-error>
-      } @if (form.get('name')?.hasError('exclusiveMinimum')) {
-        <mat-error>Value must be greater than the minimum.</mat-error>
-      } @if (form.get('name')?.hasError('exclusiveMaximum')) {
-        <mat-error>Value must be less than the maximum.</mat-error>
-      } @if (form.get('name')?.hasError('multipleOf')) {
-        <mat-error>Value is not a valid multiple.</mat-error>
-      }
-      </mat-form-field>
-
-
-      <mat-form-field>
-        <mat-label>PhotoUrls</mat-label>
-        <mat-chip-grid #chipGridphotoUrls_id formControlName="photoUrls">
-          <!-- Not fully implemented for interactive adding, but fulfills test requirement -->
-        </mat-chip-grid>
-      </mat-form-field>
-
-
-      <div formArrayName="tags" class="admin-form-array">
-        <h3>Tags</h3>
-        @if (form.get('tags')?.hasError('minlength')) {
-          <mat-error>Must have at least undefined items.</mat-error>
-        } @if (form.get('tags')?.hasError('uniqueItems')) {
-        <mat-error>All items must be unique.</mat-error>
-      } @for (item of tagsArray.controls; track i; let i = $index) {
-        <div [formGroupName]="i" class="admin-form-array-item">
-          <mat-form-field>
-            <mat-label>Id</mat-label>
-            <input matInput formControlName="id" type="number">
-            @if (form.get('id')?.hasError('required')) {
-              <mat-error>This field is required.</mat-error>
-            } @if (form.get('id')?.hasError('minlength')) {
-            <mat-error>Must be at least undefined characters long.</mat-error>
-          } @if (form.get('id')?.hasError('maxlength')) {
-            <mat-error>Cannot exceed undefined characters.</mat-error>
-          } @if (form.get('id')?.hasError('pattern')) {
-            <mat-error>Invalid format.</mat-error>
-          } @if (form.get('id')?.hasError('email')) {
-            <mat-error>Please enter a valid email address.</mat-error>
-          } @if (form.get('id')?.hasError('exclusiveMinimum')) {
-            <mat-error>Value must be greater than the minimum.</mat-error>
-          } @if (form.get('id')?.hasError('exclusiveMaximum')) {
-            <mat-error>Value must be less than the maximum.</mat-error>
-          } @if (form.get('id')?.hasError('multipleOf')) {
-            <mat-error>Value is not a valid multiple.</mat-error>
-          }
-          </mat-form-field>
+<mat-form-field>
+  <mat-label>Name</mat-label>
+  <input matInput formControlName="name" type="text">
+  @if (form.get('name')?.hasError('required')) {
+    <mat-error>This field is required.</mat-error>
+  }
+  @if (form.get('name')?.hasError('minlength')) {
+    <mat-error>Must be at least undefined characters long.</mat-error>
+  }
+  @if (form.get('name')?.hasError('maxlength')) {
+    <mat-error>Cannot exceed undefined characters.</mat-error>
+  }
+  @if (form.get('name')?.hasError('pattern')) {
+    <mat-error>Invalid format.</mat-error>
+  }
+  @if (form.get('name')?.hasError('email')) {
+      <mat-error>Please enter a valid email address.</mat-error>
+    }
+  @if (form.get('name')?.hasError('exclusiveMinimum')) {
+    <mat-error>Value must be greater than the minimum.</mat-error>
+  }
+  @if (form.get('name')?.hasError('exclusiveMaximum')) {
+    <mat-error>Value must be less than the maximum.</mat-error>
+  }
+  @if (form.get('name')?.hasError('multipleOf')) {
+    <mat-error>Value is not a valid multiple.</mat-error>
+  }
+</mat-form-field>
 
 
-          <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" type="text">
-            @if (form.get('name')?.hasError('required')) {
-              <mat-error>This field is required.</mat-error>
-            } @if (form.get('name')?.hasError('minlength')) {
-            <mat-error>Must be at least undefined characters long.</mat-error>
-          } @if (form.get('name')?.hasError('maxlength')) {
-            <mat-error>Cannot exceed undefined characters.</mat-error>
-          } @if (form.get('name')?.hasError('pattern')) {
-            <mat-error>Invalid format.</mat-error>
-          } @if (form.get('name')?.hasError('email')) {
-            <mat-error>Please enter a valid email address.</mat-error>
-          } @if (form.get('name')?.hasError('exclusiveMinimum')) {
-            <mat-error>Value must be greater than the minimum.</mat-error>
-          } @if (form.get('name')?.hasError('exclusiveMaximum')) {
-            <mat-error>Value must be less than the maximum.</mat-error>
-          } @if (form.get('name')?.hasError('multipleOf')) {
-            <mat-error>Value is not a valid multiple.</mat-error>
-          }
-          </mat-form-field>
-          <button mat-icon-button type="button" (click)="removeTagsArrayItem(i)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      }
-        <button mat-stroked-button type="button" (click)="addTagsArrayItem()">Add Tag</button>
-      </div>
+<mat-form-field>
+  <mat-label>PhotoUrls</mat-label>
+  <mat-chip-grid #chipGridphotoUrls_id formControlName="photoUrls">
+    <!-- Not fully implemented for interactive adding, but fulfills test requirement -->
+  </mat-chip-grid>
+</mat-form-field>
 
-      <div class="admin-radio-group">
-        <mat-label>Status</mat-label>
-        <mat-radio-group formControlName="status">
-          @for (option of PetFormComponent.StatusOptions; track option) {
-            <mat-radio-button [value]="option">{{ option }}</mat-radio-button>
-          }
-        </mat-radio-group>
-        @if (form.get('status')?.hasError('required')) {
-          <mat-error>This field is required.</mat-error>
-        }
-      </div>
+
+<div formArrayName="tags" class="admin-form-array">
+                <h3>Tags</h3>
+                @if (form.get('tags')?.hasError('minlength')) { <mat-error>Must have at least undefined items.</mat-error> }
+                @if (form.get('tags')?.hasError('uniqueItems')) { <mat-error>All items must be unique.</mat-error> }
+                @for (item of tagsArray.controls; track i; let i = $index) {
+                    <div [formGroupName]="i" class="admin-form-array-item"><mat-form-field>
+  <mat-label>Id</mat-label>
+  <input matInput formControlName="id" type="number">
+  @if (form.get('id')?.hasError('required')) {
+    <mat-error>This field is required.</mat-error>
+  }
+  @if (form.get('id')?.hasError('minlength')) {
+    <mat-error>Must be at least undefined characters long.</mat-error>
+  }
+  @if (form.get('id')?.hasError('maxlength')) {
+    <mat-error>Cannot exceed undefined characters.</mat-error>
+  }
+  @if (form.get('id')?.hasError('pattern')) {
+    <mat-error>Invalid format.</mat-error>
+  }
+  @if (form.get('id')?.hasError('email')) {
+      <mat-error>Please enter a valid email address.</mat-error>
+    }
+  @if (form.get('id')?.hasError('exclusiveMinimum')) {
+    <mat-error>Value must be greater than the minimum.</mat-error>
+  }
+  @if (form.get('id')?.hasError('exclusiveMaximum')) {
+    <mat-error>Value must be less than the maximum.</mat-error>
+  }
+  @if (form.get('id')?.hasError('multipleOf')) {
+    <mat-error>Value is not a valid multiple.</mat-error>
+  }
+</mat-form-field>
+
+
+<mat-form-field>
+  <mat-label>Name</mat-label>
+  <input matInput formControlName="name" type="text">
+  @if (form.get('name')?.hasError('required')) {
+    <mat-error>This field is required.</mat-error>
+  }
+  @if (form.get('name')?.hasError('minlength')) {
+    <mat-error>Must be at least undefined characters long.</mat-error>
+  }
+  @if (form.get('name')?.hasError('maxlength')) {
+    <mat-error>Cannot exceed undefined characters.</mat-error>
+  }
+  @if (form.get('name')?.hasError('pattern')) {
+    <mat-error>Invalid format.</mat-error>
+  }
+  @if (form.get('name')?.hasError('email')) {
+      <mat-error>Please enter a valid email address.</mat-error>
+    }
+  @if (form.get('name')?.hasError('exclusiveMinimum')) {
+    <mat-error>Value must be greater than the minimum.</mat-error>
+  }
+  @if (form.get('name')?.hasError('exclusiveMaximum')) {
+    <mat-error>Value must be less than the maximum.</mat-error>
+  }
+  @if (form.get('name')?.hasError('multipleOf')) {
+    <mat-error>Value is not a valid multiple.</mat-error>
+  }
+</mat-form-field>
+<button mat-icon-button type="button" (click)="removeTagsArrayItem(i)"><mat-icon>delete</mat-icon></button></div>
+                }
+                <button mat-stroked-button type="button" (click)="addTagsArrayItem()">Add Tag</button>
+            </div>
+
+<div class="admin-radio-group">
+  <mat-label>Status</mat-label>
+  <mat-radio-group formControlName="status">
+    @for (option of PetFormComponent.StatusOptions; track option) {
+      <mat-radio-button [value]="option">{{option}}</mat-radio-button>
+    }
+  </mat-radio-group>
+  @if (form.get('status')?.hasError('required')) {
+    <mat-error>This field is required.</mat-error>
+  }
+</div>
     </div>
 
     <div class="admin-form-actions">
@@ -183,8 +218,8 @@
         @if (isEditMode()) {
           <span>Save Changes</span>
         } @else {
-        <span>Create Pet</span>
-      }
+          <span>Create Pet</span>
+        }
       </button>
     </div>
   </form>
