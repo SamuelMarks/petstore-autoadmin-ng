@@ -8,7 +8,7 @@ import { Observable } from "rxjs";
 import { API_KEY_TOKEN, BEARER_TOKEN_TOKEN } from "./auth.tokens";
 
 /** Intercepts HTTP requests to apply authentication credentials based on OpenAPI security schemes. */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthInterceptor implements HttpInterceptor {
     private readonly apiKey: string | null = inject(API_KEY_TOKEN, { optional: true });
     private readonly bearerToken: (string | (() => string)) | null = inject(BEARER_TOKEN_TOKEN, { optional: true });

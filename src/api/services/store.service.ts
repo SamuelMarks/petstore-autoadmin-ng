@@ -23,38 +23,62 @@ export class StoreService {
     }
 
     getInventory(options?: RequestOptions): Observable<any>;
-    getInventory(options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<any>>;
-    getInventory(options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<any>>;
-    getInventory(options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    getInventory(observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
+    getInventory(observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
+    getInventory(observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/store/inventory`;
 
-        return this.http.get<any>(url, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.get(url, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     placeOrder(body: Order, options?: RequestOptions): Observable<any>;
-    placeOrder(body: Order, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<any>>;
-    placeOrder(body: Order, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<any>>;
-    placeOrder(body: Order, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    placeOrder(body: Order, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
+    placeOrder(body: Order, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
+    placeOrder(body: Order, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/store/order`;
 
-        return this.http.post<any>(url, body, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.post(url, null, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     getOrderById(orderId: any, options?: RequestOptions): Observable<any>;
-    getOrderById(orderId: any, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<any>>;
-    getOrderById(orderId: any, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<any>>;
-    getOrderById(orderId: any, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    getOrderById(orderId: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
+    getOrderById(orderId: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
+    getOrderById(orderId: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
-        return this.http.get<any>(url, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.get(url, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     deleteOrder(orderId: any, options?: RequestOptions): Observable<void>;
-    deleteOrder(orderId: any, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
-    deleteOrder(orderId: any, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
-    deleteOrder(orderId: any, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    deleteOrder(orderId: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
+    deleteOrder(orderId: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
+    deleteOrder(orderId: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
-        return this.http.delete<void>(url, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.delete(url, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 }

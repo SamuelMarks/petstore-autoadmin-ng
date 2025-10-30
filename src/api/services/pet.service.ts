@@ -23,83 +23,131 @@ export class PetService {
     }
 
     uploadFile(petId: any, additionalMetadata?: any, file?: any, options?: RequestOptions): Observable<any>;
-    uploadFile(petId: any, additionalMetadata?: any, file?: any, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<any>>;
-    uploadFile(petId: any, additionalMetadata?: any, file?: any, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<any>>;
-    uploadFile(petId: any, additionalMetadata?: any, file?: any, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    uploadFile(petId: any, additionalMetadata?: any, file?: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
+    uploadFile(petId: any, additionalMetadata?: any, file?: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
+    uploadFile(petId: any, additionalMetadata?: any, file?: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/pet/${petId}/uploadImage`;
 
-        return this.http.post<any>(url, null, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.post(url, null, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     addPet(body: Pet, options?: RequestOptions): Observable<void>;
-    addPet(body: Pet, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
-    addPet(body: Pet, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
-    addPet(body: Pet, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    addPet(body: Pet, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
+    addPet(body: Pet, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
+    addPet(body: Pet, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/pet`;
 
-        return this.http.post<void>(url, body, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.post(url, null, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     updatePet(body: Pet, options?: RequestOptions): Observable<void>;
-    updatePet(body: Pet, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
-    updatePet(body: Pet, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
-    updatePet(body: Pet, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    updatePet(body: Pet, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
+    updatePet(body: Pet, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
+    updatePet(body: Pet, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/pet`;
 
-        return this.http.put<void>(url, body, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.put(url, null, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     findPetsByStatus(status: any, options?: RequestOptions): Observable<any>;
-    findPetsByStatus(status: any, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<any>>;
-    findPetsByStatus(status: any, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<any>>;
-    findPetsByStatus(status: any, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    findPetsByStatus(status: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
+    findPetsByStatus(status: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
+    findPetsByStatus(status: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/pet/findByStatus`;
 
         let params = new HttpParams();
         if (status != null) params = HttpParamsBuilder.addToHttpParams(params, status, 'status');
 
-        return this.http.get<any>(url, { ...options, context: this.createContextWithClientId(options?.context), params } as any);
+        return this.http.get(url, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            , params
+        });
     }
 
     findPetsByTags(tags: any, options?: RequestOptions): Observable<any>;
-    findPetsByTags(tags: any, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<any>>;
-    findPetsByTags(tags: any, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<any>>;
-    findPetsByTags(tags: any, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    findPetsByTags(tags: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
+    findPetsByTags(tags: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
+    findPetsByTags(tags: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/pet/findByTags`;
 
         let params = new HttpParams();
         if (tags != null) params = HttpParamsBuilder.addToHttpParams(params, tags, 'tags');
 
-        return this.http.get<any>(url, { ...options, context: this.createContextWithClientId(options?.context), params } as any);
+        return this.http.get(url, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            , params
+        });
     }
 
     getPetById(petId: any, options?: RequestOptions): Observable<any>;
-    getPetById(petId: any, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<any>>;
-    getPetById(petId: any, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<any>>;
-    getPetById(petId: any, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    getPetById(petId: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
+    getPetById(petId: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
+    getPetById(petId: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/pet/${petId}`;
 
-        return this.http.get<any>(url, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.get(url, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     updatePetWithForm(petId: any, name?: any, status?: any, options?: RequestOptions): Observable<void>;
-    updatePetWithForm(petId: any, name?: any, status?: any, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
-    updatePetWithForm(petId: any, name?: any, status?: any, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
-    updatePetWithForm(petId: any, name?: any, status?: any, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    updatePetWithForm(petId: any, name?: any, status?: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
+    updatePetWithForm(petId: any, name?: any, status?: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
+    updatePetWithForm(petId: any, name?: any, status?: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/pet/${petId}`;
 
-        return this.http.post<void>(url, null, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.post(url, null, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     deletePet(petId: any, apiKey?: any, options?: RequestOptions): Observable<void>;
-    deletePet(petId: any, apiKey?: any, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
-    deletePet(petId: any, apiKey?: any, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
-    deletePet(petId: any, apiKey?: any, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    deletePet(petId: any, apiKey?: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
+    deletePet(petId: any, apiKey?: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
+    deletePet(petId: any, apiKey?: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/pet/${petId}`;
 
         let headers = new HttpHeaders();
         if (apiKey != null) headers = headers.append('api_key', String(apiKey));
 
-        return this.http.delete<void>(url, { ...options, context: this.createContextWithClientId(options?.context), headers } as any);
+        return this.http.delete(url, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            , headers
+        });
     }
 }

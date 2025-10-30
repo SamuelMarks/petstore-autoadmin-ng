@@ -1,9 +1,5 @@
+import { Routes } from "@angular/router";
 
-import { Routes } from '@angular/router';
-
-import { StoreFormComponent } from './store-form/store-form.component';
-
-
-export const routes: Routes = [
-    { path: 'edit/:id', component: StoreFormComponent }
+export let routes: Routes = [
+    { path: 'edit/:id', loadComponent: () => import('./store-form/store-form.component').then(m => m.StoreFormComponent) }
 ];

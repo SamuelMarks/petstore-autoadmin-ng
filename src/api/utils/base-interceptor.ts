@@ -10,7 +10,7 @@ import { CLIENT_CONTEXT_TOKEN_DEFAULT, HTTP_INTERCEPTORS_DEFAULT } from "../toke
 /** Base HttpInterceptor for the Default client. */
 /** It checks for a client-specific context token on each request and, if present, */
 /** applies all interceptors provided via the HTTP_INTERCEPTORS_DEFAULT token. */
-@Injectable
+@Injectable({ providedIn: 'root' })
 export class DefaultBaseInterceptor implements HttpInterceptor {
     private readonly httpInterceptors: HttpInterceptor[] = inject(HTTP_INTERCEPTORS_DEFAULT);
     private readonly clientContextToken: HttpContextToken<string> = CLIENT_CONTEXT_TOKEN_DEFAULT;

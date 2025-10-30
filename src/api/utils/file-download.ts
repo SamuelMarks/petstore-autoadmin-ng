@@ -32,7 +32,6 @@ export function downloadFileOperator<T extends Blob | HttpResponse<Blob>>(fallba
     return (source: Observable<T>) => {
         return source.pipe(
             tap((response: T) => {
-                // --- START FIX ---
                 const blob = response instanceof HttpResponse ? response.body : response;
                 if (!blob) {
                     console.error('Download failed: Blob is null or undefined.');
@@ -43,7 +42,6 @@ export function downloadFileOperator<T extends Blob | HttpResponse<Blob>>(fallba
                 const filename = extractFilenameFromContentDisposition(contentDisposition) ?? fallbackFilename;
 
                 downloadFile(blob, filename);
-                // --- END FIX ---
             })
         );
     };

@@ -1,57 +1,73 @@
-import { Component, OnInit, OnDestroy, inject, input, computed, effect } from "@angular/core";
-import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule, FormArray } from "@angular/forms";
-import { Router, ActivatedRoute, RouterModule } from "@angular/router";
+import { Component, inject, input, computed, effect } from "@angular/core";
+import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
+import * as models from "../../../models";
+import { PetService } from "../../../services";
 import { CommonModule } from "@angular/common";
+import { ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatRadioModule } from "@angular/material/radio";
-import * as models from "../../../models";
-import { PetService } from "../../../services";
 
 @Component({
-            selector: 'app-pet-form',
-            standalone: true,
-            imports: [CommonModule, MatButtonModule, MatChipsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatRadioModule, ReactiveFormsModule, RouterModule],
-            templateUrl: './pet-form.component.html',
-            styleUrls: ['./pet-form.component.scss']
-        })
+                selector: 'app-pet-form',
+                standalone: true,
+                imports: [CommonModule, MatButtonModule, MatChipsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatRadioModule, ReactiveFormsModule, RouterModule],
+                templateUrl: './pet-form.component.html',
+                styleUrls: ['./pet-form.component.scss']
+            })
 export class PetFormComponent {
     form!: FormGroup;
     private readonly fb = inject(FormBuilder);
     private readonly router = inject(Router);
     private readonly route = inject(ActivatedRoute);
     private readonly petService = inject(PetService);
-    id = input<string | null>(null, { alias: "id" });
+    id = input<string | null>(null);
     isEditMode = computed(() => !!this.id());
     formTitle = computed(() => this.isEditMode() ? 'Edit Pet' : 'Create Pet');
-    static StatusOptions = ["available","pending","sold"];
+    readonly StatusOptions = ["available","pending","sold"];
 
     constructor() {
 
                         this.initForm();
-                        effect(() => {
-                            this.form.reset();
+                        effect((onCleanup) => {
                             const id = this.id();
+                            // When the id changes, we are in a new state. Reset the form.
+                            this.form.reset();
+
                             if (this.isEditMode() && id) {
-                                this.petService.getPetById(id).subscribe((entity: any) => {
+                                const sub = this.petService.getPetById(id).subscribe((entity: any) => {
                                    if (entity) this.patchForm(entity as models.Pet);
                                 });
+                                onCleanup(() => sub.unsubscribe());
+                            }
+
+                            // For polymorphic forms, set up a subscription to the discriminator field
+                            if (false) {
+                                 const discriminatorCtrl = this.form.get('undefined');
+                                 if (discriminatorCtrl) {
+                                     const sub = discriminatorCtrl.valueChanges.subscribe(type => {
+                                         this.updateFormForPetType(type);
+                                     });
+                                     onCleanup(() => sub.unsubscribe());
+                                 }
                             }
                         });
                     
     }
 
     private initForm() {
-        this.form = new FormGroup({ id: new FormControl(null),
-        category: new FormGroup({ id: new FormControl(null),
-        name: new FormControl(null) }),
-        name: new FormControl(null, [Validators.required]),
-        photoUrls: new FormControl(null, [Validators.required]),
-        tags: new FormArray([]),
-        status: new FormControl(null) });
+        this.form = this.fb.group({ id: this.fb.control(null),
+        category: this.fb.group({ id: this.fb.control(null),
+        name: this.fb.control(null) }),
+        name: this.fb.control(null, [Validators.required]),
+        photoUrls: this.fb.control(null, [Validators.required]),
+        tags: this.fb.array([]),
+        status: this.fb.control(null) });
     }
 
     get tagsArray(): FormArray {
@@ -59,8 +75,8 @@ export class PetFormComponent {
     }
 
     createTagsArrayItem(item?: any): FormGroup {
-        return new FormGroup({ id: new FormControl(null),
-        name: new FormControl(null) });
+        return this.fb.group({ id: this.fb.control(null),
+        name: this.fb.control(null) });
     }
 
     addTagsArrayItem() {
@@ -73,7 +89,8 @@ export class PetFormComponent {
 
     patchForm(entity: models.Pet) {
 
-                this.form.patchValue(entity);
+                const { tags, ...rest } = entity;
+                this.form.patchValue(rest);
                 
                     if (entity.tags && Array.isArray(entity.tags)) {
                         this.tagsArray.clear();
@@ -91,9 +108,10 @@ export class PetFormComponent {
         if (this.form.invalid) { return; }
         const finalPayload = this.form.value;
         const action$ = this.isEditMode()
-          ? this.petService.updatePet(this.id()!)
-          : this.petService.addPet(finalPayload);
+          ? this.petService.updatePet(this.id()!, finalPayload)
+          : this.petService.createPet(finalPayload);
         action$.subscribe(() => this.onCancel());
+            
     }
 
     onCancel() {

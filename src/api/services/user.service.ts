@@ -23,78 +23,126 @@ export class UserService {
     }
 
     createUsersWithListInput(body: User[], options?: RequestOptions): Observable<void>;
-    createUsersWithListInput(body: User[], options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
-    createUsersWithListInput(body: User[], options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
-    createUsersWithListInput(body: User[], options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    createUsersWithListInput(body: User[], observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
+    createUsersWithListInput(body: User[], observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
+    createUsersWithListInput(body: User[], observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/user/createWithList`;
 
-        return this.http.post<void>(url, body, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.post(url, null, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     getUserByName(username: any, options?: RequestOptions): Observable<any>;
-    getUserByName(username: any, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<any>>;
-    getUserByName(username: any, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<any>>;
-    getUserByName(username: any, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    getUserByName(username: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
+    getUserByName(username: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
+    getUserByName(username: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
-        return this.http.get<any>(url, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.get(url, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     updateUser(username: any, body: User, options?: RequestOptions): Observable<void>;
-    updateUser(username: any, body: User, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
-    updateUser(username: any, body: User, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
-    updateUser(username: any, body: User, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    updateUser(username: any, body: User, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
+    updateUser(username: any, body: User, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
+    updateUser(username: any, body: User, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
-        return this.http.put<void>(url, body, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.put(url, null, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     deleteUser(username: any, options?: RequestOptions): Observable<void>;
-    deleteUser(username: any, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
-    deleteUser(username: any, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
-    deleteUser(username: any, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    deleteUser(username: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
+    deleteUser(username: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
+    deleteUser(username: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
-        return this.http.delete<void>(url, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.delete(url, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     loginUser(username: any, password: any, options?: RequestOptions): Observable<any>;
-    loginUser(username: any, password: any, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<any>>;
-    loginUser(username: any, password: any, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<any>>;
-    loginUser(username: any, password: any, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    loginUser(username: any, password: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
+    loginUser(username: any, password: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
+    loginUser(username: any, password: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/user/login`;
 
         let params = new HttpParams();
         if (username != null) params = HttpParamsBuilder.addToHttpParams(params, username, 'username');
         if (password != null) params = HttpParamsBuilder.addToHttpParams(params, password, 'password');
 
-        return this.http.get<any>(url, { ...options, context: this.createContextWithClientId(options?.context), params } as any);
+        return this.http.get(url, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            , params
+        });
     }
 
     logoutUser(options?: RequestOptions): Observable<void>;
-    logoutUser(options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
-    logoutUser(options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
-    logoutUser(options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    logoutUser(observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
+    logoutUser(observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
+    logoutUser(observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/user/logout`;
 
-        return this.http.get<void>(url, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.get(url, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     createUsersWithArrayInput(body: User[], options?: RequestOptions): Observable<void>;
-    createUsersWithArrayInput(body: User[], options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
-    createUsersWithArrayInput(body: User[], options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
-    createUsersWithArrayInput(body: User[], options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    createUsersWithArrayInput(body: User[], observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
+    createUsersWithArrayInput(body: User[], observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
+    createUsersWithArrayInput(body: User[], observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/user/createWithArray`;
 
-        return this.http.post<void>(url, body, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.post(url, null, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 
     createUser(body: User, options?: RequestOptions): Observable<void>;
-    createUser(body: User, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
-    createUser(body: User, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
-    createUser(body: User, options?: RequestOptions & { observe?: 'body' | 'response' | 'events' }): Observable<any> {
+    createUser(body: User, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
+    createUser(body: User, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
+    createUser(body: User, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
         const url = `${this.basePath}/user`;
 
-        return this.http.post<void>(url, body, { ...options, context: this.createContextWithClientId(options?.context) } as any);
+        return this.http.post(url, null, 
+        {
+            ...options,
+            observe: observe as any,
+            context: this.createContextWithClientId(options?.context)
+            
+        });
     }
 }

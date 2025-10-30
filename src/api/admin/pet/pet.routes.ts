@@ -1,10 +1,6 @@
+import { Routes } from "@angular/router";
 
-import { Routes } from '@angular/router';
-
-import { PetFormComponent } from './pet-form/pet-form.component';
-
-
-export const routes: Routes = [
-    { path: 'create', component: PetFormComponent },
-    { path: 'edit/:id', component: PetFormComponent }
+export let routes: Routes = [
+    { path: 'create', loadComponent: () => import('./pet-form/pet-form.component').then(m => m.PetFormComponent) },
+    { path: 'edit/:id', loadComponent: () => import('./pet-form/pet-form.component').then(m => m.PetFormComponent) }
 ];

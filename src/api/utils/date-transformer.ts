@@ -35,7 +35,7 @@ export function transformDates(body: any): any {
 }
 
 /** Intercepts HTTP responses and transforms ISO date strings to Date objects in the response body. */
-@Injectable
+@Injectable({ providedIn: 'root' })
 export class DateInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 

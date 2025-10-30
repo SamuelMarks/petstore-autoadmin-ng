@@ -1,10 +1,6 @@
+import { Routes } from "@angular/router";
 
-import { Routes } from '@angular/router';
-
-import { UserFormComponent } from './user-form/user-form.component';
-
-
-export const routes: Routes = [
-    { path: 'create', component: UserFormComponent },
-    { path: 'edit/:id', component: UserFormComponent }
+export let routes: Routes = [
+    { path: 'create', loadComponent: () => import('./user-form/user-form.component').then(m => m.UserFormComponent) },
+    { path: 'edit/:id', loadComponent: () => import('./user-form/user-form.component').then(m => m.UserFormComponent) }
 ];
