@@ -8,7 +8,7 @@ import { Observable } from "rxjs";
 import type { RequestOptions } from "../models";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from "../tokens";
 import { HttpParamsBuilder } from "../utils/http-params-builder";
-import { Pet } from "../models/index";
+import { ApiResponse, Pet } from "../models/index";
 
 @Injectable({ providedIn: 'root' })
 export class PetService {
@@ -22,132 +22,281 @@ export class PetService {
         return context.set(this.clientContextToken, 'default');
     }
 
-    uploadFile(petId: any, additionalMetadata?: any, file?: any, options?: RequestOptions): Observable<any>;
-    uploadFile(petId: any, additionalMetadata?: any, file?: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
-    uploadFile(petId: any, additionalMetadata?: any, file?: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
-    uploadFile(petId: any, additionalMetadata?: any, file?: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    uploadFile(petId: number, additionalMetadata?: string, file?: string, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<ApiResponse>>;
+    uploadFile(petId: number, additionalMetadata?: string, file?: string, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<ApiResponse>>;
+    uploadFile(petId: number, additionalMetadata?: string, file?: string, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    uploadFile(petId: number, additionalMetadata?: string, file?: string, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    uploadFile(petId: number, additionalMetadata?: string, file?: string, options?: RequestOptions & { observe?: 'body' }): Observable<ApiResponse>;
+    uploadFile(petId: number, additionalMetadata?: string, file?: string, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/pet/${petId}/uploadImage`;
 
-        return this.http.post(url, null, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.post<ApiResponse>(url, null, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.post<ApiResponse>(url, null, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.post(url, null, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.post(url, null, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.post<ApiResponse>(url, null, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    addPet(body: Pet, options?: RequestOptions): Observable<void>;
-    addPet(body: Pet, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
-    addPet(body: Pet, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
-    addPet(body: Pet, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    addPet(pet?: Pet, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+    addPet(pet?: Pet, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+    addPet(pet?: Pet, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    addPet(pet?: Pet, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    addPet(pet?: Pet, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+    addPet(pet?: Pet, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/pet`;
 
-        return this.http.post(url, null, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.post<void>(url, pet, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.post<void>(url, pet, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.post(url, pet, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.post(url, pet, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.post<void>(url, pet, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    updatePet(body: Pet, options?: RequestOptions): Observable<void>;
-    updatePet(body: Pet, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
-    updatePet(body: Pet, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
-    updatePet(body: Pet, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    updatePet(pet?: Pet, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+    updatePet(pet?: Pet, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+    updatePet(pet?: Pet, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    updatePet(pet?: Pet, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    updatePet(pet?: Pet, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+    updatePet(pet?: Pet, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/pet`;
 
-        return this.http.put(url, null, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.put<void>(url, pet, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.put<void>(url, pet, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.put(url, pet, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.put(url, pet, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.put<void>(url, pet, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    findPetsByStatus(status: any, options?: RequestOptions): Observable<any>;
-    findPetsByStatus(status: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
-    findPetsByStatus(status: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
-    findPetsByStatus(status: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    findPetsByStatus(status: 'available' | 'pending' | 'sold'[], options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<Pet[]>>;
+    findPetsByStatus(status: 'available' | 'pending' | 'sold'[], options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<Pet[]>>;
+    findPetsByStatus(status: 'available' | 'pending' | 'sold'[], options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    findPetsByStatus(status: 'available' | 'pending' | 'sold'[], options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    findPetsByStatus(status: 'available' | 'pending' | 'sold'[], options?: RequestOptions & { observe?: 'body' }): Observable<Pet[]>;
+    findPetsByStatus(status: 'available' | 'pending' | 'sold'[], options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/pet/findByStatus`;
 
-        let params = new HttpParams();
-        if (status != null) params = HttpParamsBuilder.addToHttpParams(params, status, 'status');
+            let params = new HttpParams(options?.params as any);
+            if (status != null) params = HttpParamsBuilder.addToHttpParams(params, status, 'status');
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials, params };
 
-        return this.http.get(url, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            , params
-        });
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.get<Pet[]>(url, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.get<Pet[]>(url, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.get(url, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.get(url, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.get<Pet[]>(url, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    findPetsByTags(tags: any, options?: RequestOptions): Observable<any>;
-    findPetsByTags(tags: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
-    findPetsByTags(tags: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
-    findPetsByTags(tags: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    findPetsByTags(tags: string[], options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<Pet[]>>;
+    findPetsByTags(tags: string[], options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<Pet[]>>;
+    findPetsByTags(tags: string[], options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    findPetsByTags(tags: string[], options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    findPetsByTags(tags: string[], options?: RequestOptions & { observe?: 'body' }): Observable<Pet[]>;
+    findPetsByTags(tags: string[], options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/pet/findByTags`;
 
-        let params = new HttpParams();
-        if (tags != null) params = HttpParamsBuilder.addToHttpParams(params, tags, 'tags');
+            let params = new HttpParams(options?.params as any);
+            if (tags != null) params = HttpParamsBuilder.addToHttpParams(params, tags, 'tags');
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials, params };
 
-        return this.http.get(url, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            , params
-        });
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.get<Pet[]>(url, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.get<Pet[]>(url, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.get(url, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.get(url, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.get<Pet[]>(url, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    getPetById(petId: any, options?: RequestOptions): Observable<any>;
-    getPetById(petId: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
-    getPetById(petId: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
-    getPetById(petId: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    getPetById(petId: number, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<Pet>>;
+    getPetById(petId: number, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<Pet>>;
+    getPetById(petId: number, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    getPetById(petId: number, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    getPetById(petId: number, options?: RequestOptions & { observe?: 'body' }): Observable<Pet>;
+    getPetById(petId: number, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/pet/${petId}`;
 
-        return this.http.get(url, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.get<Pet>(url, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.get<Pet>(url, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.get(url, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.get(url, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.get<Pet>(url, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    updatePetWithForm(petId: any, name?: any, status?: any, options?: RequestOptions): Observable<void>;
-    updatePetWithForm(petId: any, name?: any, status?: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
-    updatePetWithForm(petId: any, name?: any, status?: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
-    updatePetWithForm(petId: any, name?: any, status?: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    updatePetWithForm(petId: number, name?: string, status?: string, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+    updatePetWithForm(petId: number, name?: string, status?: string, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+    updatePetWithForm(petId: number, name?: string, status?: string, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    updatePetWithForm(petId: number, name?: string, status?: string, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    updatePetWithForm(petId: number, name?: string, status?: string, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+    updatePetWithForm(petId: number, name?: string, status?: string, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/pet/${petId}`;
 
-        return this.http.post(url, null, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.post<void>(url, null, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.post<void>(url, null, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.post(url, null, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.post(url, null, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.post<void>(url, null, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    deletePet(petId: any, apiKey?: any, options?: RequestOptions): Observable<void>;
-    deletePet(petId: any, apiKey?: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
-    deletePet(petId: any, apiKey?: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
-    deletePet(petId: any, apiKey?: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    deletePet(petId: number, apiKey?: string, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+    deletePet(petId: number, apiKey?: string, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+    deletePet(petId: number, apiKey?: string, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    deletePet(petId: number, apiKey?: string, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    deletePet(petId: number, apiKey?: string, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+    deletePet(petId: number, apiKey?: string, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/pet/${petId}`;
 
-        let headers = new HttpHeaders();
-        if (apiKey != null) headers = headers.append('api_key', String(apiKey));
+            let headers = new HttpHeaders(options?.headers);
+            if (apiKey != null) headers = headers.append('api_key', String(apiKey));
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials, headers };
 
-        return this.http.delete(url, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            , headers
-        });
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.delete<void>(url, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.delete<void>(url, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.delete(url, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.delete(url, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.delete<void>(url, finalOptions);
+                  }
+                }
+              }
+            }
     }
 }

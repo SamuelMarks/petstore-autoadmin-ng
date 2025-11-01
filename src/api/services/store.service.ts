@@ -22,63 +22,139 @@ export class StoreService {
         return context.set(this.clientContextToken, 'default');
     }
 
-    getInventory(options?: RequestOptions): Observable<any>;
-    getInventory(observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
-    getInventory(observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
-    getInventory(observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    getInventory(options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<Record<string, number>>>;
+    getInventory(options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<Record<string, number>>>;
+    getInventory(options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    getInventory(options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    getInventory(options?: RequestOptions & { observe?: 'body' }): Observable<Record<string, number>>;
+    getInventory(options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/store/inventory`;
 
-        return this.http.get(url, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.get<Record<string, number>>(url, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.get<Record<string, number>>(url, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.get(url, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.get(url, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.get<Record<string, number>>(url, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    placeOrder(body: Order, options?: RequestOptions): Observable<any>;
-    placeOrder(body: Order, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
-    placeOrder(body: Order, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
-    placeOrder(body: Order, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    placeOrder(order?: Order, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<Order>>;
+    placeOrder(order?: Order, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<Order>>;
+    placeOrder(order?: Order, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    placeOrder(order?: Order, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    placeOrder(order?: Order, options?: RequestOptions & { observe?: 'body' }): Observable<Order>;
+    placeOrder(order?: Order, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/store/order`;
 
-        return this.http.post(url, null, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.post<Order>(url, order, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.post<Order>(url, order, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.post(url, order, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.post(url, order, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.post<Order>(url, order, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    getOrderById(orderId: any, options?: RequestOptions): Observable<any>;
-    getOrderById(orderId: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
-    getOrderById(orderId: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
-    getOrderById(orderId: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    getOrderById(orderId: number, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<Order>>;
+    getOrderById(orderId: number, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<Order>>;
+    getOrderById(orderId: number, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    getOrderById(orderId: number, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    getOrderById(orderId: number, options?: RequestOptions & { observe?: 'body' }): Observable<Order>;
+    getOrderById(orderId: number, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
-        return this.http.get(url, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.get<Order>(url, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.get<Order>(url, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.get(url, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.get(url, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.get<Order>(url, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    deleteOrder(orderId: any, options?: RequestOptions): Observable<void>;
-    deleteOrder(orderId: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
-    deleteOrder(orderId: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
-    deleteOrder(orderId: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    deleteOrder(orderId: number, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+    deleteOrder(orderId: number, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+    deleteOrder(orderId: number, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    deleteOrder(orderId: number, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    deleteOrder(orderId: number, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+    deleteOrder(orderId: number, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
-        return this.http.delete(url, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.delete<void>(url, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.delete<void>(url, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.delete(url, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.delete(url, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.delete<void>(url, finalOptions);
+                  }
+                }
+              }
+            }
     }
 }

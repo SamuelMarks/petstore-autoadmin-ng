@@ -25,45 +25,33 @@ export interface DefaultConfig {
 
 /** Provides the necessary services and configuration for the Default API client. */
 export function provideDefaultClient(config: DefaultConfig): EnvironmentProviders {
-
     const providers: Provider[] = [
         { provide: BASE_PATH_DEFAULT, useValue: config.basePath },
         // The base interceptor is responsible for applying client-specific interceptors.
         { provide: HTTP_INTERCEPTORS, useClass: DefaultBaseInterceptor, multi: true }
     ];
 
+    // Provide the AuthInterceptor to handle adding auth credentials to requests.
+    providers.push({ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true });
 
-        // Provide the AuthInterceptor to handle adding auth credentials to requests.
-        providers.push({
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthInterceptor,
-            multi: true
-        });
+    if (config.apiKey) {
+        providers.push({ provide: API_KEY_TOKEN, useValue: config.apiKey });
+    }
 
-        // Provide the API key via the API_KEY_TOKEN if it's configured.
-        if (config.apiKey) {
-            providers.push({ provide: API_KEY_TOKEN, useValue: config.apiKey });
-        }
-
-        // Provide the bearer token via the BEARER_TOKEN_TOKEN if it's configured.
-        if (config.bearerToken) {
-            providers.push({ provide: BEARER_TOKEN_TOKEN, useValue: config.bearerToken });
-        }
-
+    if (config.bearerToken) {
+        providers.push({ provide: BEARER_TOKEN_TOKEN, useValue: config.bearerToken });
+    }
 
     // Instantiate custom interceptors provided by the user.
     const customInterceptors = config.interceptors?.map(InterceptorClass => new InterceptorClass()) || [];
 
-    // Add the date transformer interceptor if enabled. It runs before custom interceptors.
-    if (config.enableDateTransform !== false && true) {
+    if (config.enableDateTransform !== false) {
+        // The date transformer interceptor runs before other custom interceptors.
         customInterceptors.unshift(new DateInterceptor());
     }
 
-    // Provide a single array of all client-specific interceptors.
-    providers.push({
-        provide: HTTP_INTERCEPTORS_DEFAULT,
-        useValue: customInterceptors
-    });
+    // Provide a single array of all client-specific interceptors for the BaseInterceptor to use.
+    providers.push({ provide: HTTP_INTERCEPTORS_DEFAULT, useValue: customInterceptors });
 
     return makeEnvironmentProviders(providers);
 }

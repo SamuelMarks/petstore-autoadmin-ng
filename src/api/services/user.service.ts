@@ -22,127 +22,278 @@ export class UserService {
         return context.set(this.clientContextToken, 'default');
     }
 
-    createUsersWithListInput(body: User[], options?: RequestOptions): Observable<void>;
-    createUsersWithListInput(body: User[], observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
-    createUsersWithListInput(body: User[], observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
-    createUsersWithListInput(body: User[], observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    createUsersWithListInput(body?: User[], options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+    createUsersWithListInput(body?: User[], options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+    createUsersWithListInput(body?: User[], options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    createUsersWithListInput(body?: User[], options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    createUsersWithListInput(body?: User[], options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+    createUsersWithListInput(body?: User[], options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/user/createWithList`;
 
-        return this.http.post(url, null, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.post<void>(url, body, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.post<void>(url, body, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.post(url, body, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.post(url, body, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.post<void>(url, body, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    getUserByName(username: any, options?: RequestOptions): Observable<any>;
-    getUserByName(username: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
-    getUserByName(username: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
-    getUserByName(username: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    getUserByName(username: string, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<User>>;
+    getUserByName(username: string, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<User>>;
+    getUserByName(username: string, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    getUserByName(username: string, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    getUserByName(username: string, options?: RequestOptions & { observe?: 'body' }): Observable<User>;
+    getUserByName(username: string, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
-        return this.http.get(url, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.get<User>(url, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.get<User>(url, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.get(url, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.get(url, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.get<User>(url, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    updateUser(username: any, body: User, options?: RequestOptions): Observable<void>;
-    updateUser(username: any, body: User, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
-    updateUser(username: any, body: User, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
-    updateUser(username: any, body: User, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    updateUser(username: string, user?: User, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+    updateUser(username: string, user?: User, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+    updateUser(username: string, user?: User, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    updateUser(username: string, user?: User, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    updateUser(username: string, user?: User, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+    updateUser(username: string, user?: User, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
-        return this.http.put(url, null, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.put<void>(url, user, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.put<void>(url, user, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.put(url, user, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.put(url, user, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.put<void>(url, user, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    deleteUser(username: any, options?: RequestOptions): Observable<void>;
-    deleteUser(username: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
-    deleteUser(username: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
-    deleteUser(username: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    deleteUser(username: string, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+    deleteUser(username: string, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+    deleteUser(username: string, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    deleteUser(username: string, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    deleteUser(username: string, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+    deleteUser(username: string, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
-        return this.http.delete(url, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.delete<void>(url, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.delete<void>(url, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.delete(url, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.delete(url, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.delete<void>(url, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    loginUser(username: any, password: any, options?: RequestOptions): Observable<any>;
-    loginUser(username: any, password: any, observe: 'response', options?: RequestOptions): Observable<HttpResponse<any>>;
-    loginUser(username: any, password: any, observe: 'events', options?: RequestOptions): Observable<HttpEvent<any>>;
-    loginUser(username: any, password: any, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    loginUser(username: string, password: string, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<string>>;
+    loginUser(username: string, password: string, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<string>>;
+    loginUser(username: string, password: string, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    loginUser(username: string, password: string, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    loginUser(username: string, password: string, options?: RequestOptions & { observe?: 'body' }): Observable<string>;
+    loginUser(username: string, password: string, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/user/login`;
 
-        let params = new HttpParams();
-        if (username != null) params = HttpParamsBuilder.addToHttpParams(params, username, 'username');
-        if (password != null) params = HttpParamsBuilder.addToHttpParams(params, password, 'password');
+            let params = new HttpParams(options?.params as any);
+            if (username != null) params = HttpParamsBuilder.addToHttpParams(params, username, 'username');
+            if (password != null) params = HttpParamsBuilder.addToHttpParams(params, password, 'password');
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials, params };
 
-        return this.http.get(url, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            , params
-        });
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.get<string>(url, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.get<string>(url, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.get(url, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.get(url, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.get<string>(url, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    logoutUser(options?: RequestOptions): Observable<void>;
-    logoutUser(observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
-    logoutUser(observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
-    logoutUser(observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    logoutUser(options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+    logoutUser(options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+    logoutUser(options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    logoutUser(options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    logoutUser(options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+    logoutUser(options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/user/logout`;
 
-        return this.http.get(url, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.get<void>(url, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.get<void>(url, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.get(url, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.get(url, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.get<void>(url, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    createUsersWithArrayInput(body: User[], options?: RequestOptions): Observable<void>;
-    createUsersWithArrayInput(body: User[], observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
-    createUsersWithArrayInput(body: User[], observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
-    createUsersWithArrayInput(body: User[], observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    createUsersWithArrayInput(body?: User[], options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+    createUsersWithArrayInput(body?: User[], options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+    createUsersWithArrayInput(body?: User[], options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    createUsersWithArrayInput(body?: User[], options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    createUsersWithArrayInput(body?: User[], options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+    createUsersWithArrayInput(body?: User[], options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/user/createWithArray`;
 
-        return this.http.post(url, null, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.post<void>(url, body, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.post<void>(url, body, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.post(url, body, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.post(url, body, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.post<void>(url, body, finalOptions);
+                  }
+                }
+              }
+            }
     }
 
-    createUser(body: User, options?: RequestOptions): Observable<void>;
-    createUser(body: User, observe: 'response', options?: RequestOptions): Observable<HttpResponse<void>>;
-    createUser(body: User, observe: 'events', options?: RequestOptions): Observable<HttpEvent<void>>;
-    createUser(body: User, observe?: 'body' | 'response' | 'events', options?: RequestOptions): Observable<any> {
+    createUser(user?: User, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+    createUser(user?: User, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+    createUser(user?: User, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+    createUser(user?: User, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+    createUser(user?: User, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+    createUser(user?: User, options?: RequestOptions & { observe?: "body" | "events" | "response", responseType?: "blob" | "text" | "json" }): Observable<any> {
         const url = `${this.basePath}/user`;
 
-        return this.http.post(url, null, 
-        {
-            ...options,
-            observe: observe as any,
-            context: this.createContextWithClientId(options?.context)
-            
-        });
+            const finalOptions = { context: this.createContextWithClientId(options?.context), reportProgress: options?.reportProgress, withCredentials: options?.withCredentials };
+
+
+            switch (options?.observe) {
+              case 'response': {
+                return this.http.post<void>(url, user, { ...finalOptions, observe: 'response' });
+              }
+              case 'events': {
+                return this.http.post<void>(url, user, { ...finalOptions, observe: 'events' });
+              }
+              default: { // 'body' or undefined
+                switch (options?.responseType) {
+                  case 'blob': {
+                    return this.http.post(url, user, { ...finalOptions, responseType: 'blob' });
+                  }
+                  case 'text': {
+                    return this.http.post(url, user, { ...finalOptions,  responseType: 'text' });
+                  }
+                  default: { // 'json' or undefined
+                    return this.http.post<void>(url, user, finalOptions);
+                  }
+                }
+              }
+            }
     }
 }
