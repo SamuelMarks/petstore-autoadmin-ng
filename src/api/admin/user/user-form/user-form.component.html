@@ -1,252 +1,44 @@
 <div class="admin-form-container">
-  <h1>{{ formTitle() }}</h1>
-
+  <h1>{{ formTitle }}</h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="admin-form-fields">
       <mat-form-field>
-  <mat-label>Id</mat-label>
-  <input matInput formControlName="id" type="number">
-  @if (form.get('id')?.hasError('required')) {
-    <mat-error>This field is required.</mat-error>
-  }
-  @if (form.get('id')?.hasError('minlength')) {
-    <mat-error>Must be at least undefined characters long.</mat-error>
-  }
-  @if (form.get('id')?.hasError('maxlength')) {
-    <mat-error>Cannot exceed undefined characters.</mat-error>
-  }
-  @if (form.get('id')?.hasError('pattern')) {
-    <mat-error>Invalid format.</mat-error>
-  }
-  @if (form.get('id')?.hasError('email')) {
-      <mat-error>Please enter a valid email address.</mat-error>
-    }
-  @if (form.get('id')?.hasError('exclusiveMinimum')) {
-    <mat-error>Value must be greater than the minimum.</mat-error>
-  }
-  @if (form.get('id')?.hasError('exclusiveMaximum')) {
-    <mat-error>Value must be less than the maximum.</mat-error>
-  }
-  @if (form.get('id')?.hasError('multipleOf')) {
-    <mat-error>Value is not a valid multiple.</mat-error>
-  }
-</mat-form-field>
-
-
-<mat-form-field>
-  <mat-label>Username</mat-label>
-  <input matInput formControlName="username" type="text">
-  @if (form.get('username')?.hasError('required')) {
-    <mat-error>This field is required.</mat-error>
-  }
-  @if (form.get('username')?.hasError('minlength')) {
-    <mat-error>Must be at least undefined characters long.</mat-error>
-  }
-  @if (form.get('username')?.hasError('maxlength')) {
-    <mat-error>Cannot exceed undefined characters.</mat-error>
-  }
-  @if (form.get('username')?.hasError('pattern')) {
-    <mat-error>Invalid format.</mat-error>
-  }
-  @if (form.get('username')?.hasError('email')) {
-      <mat-error>Please enter a valid email address.</mat-error>
-    }
-  @if (form.get('username')?.hasError('exclusiveMinimum')) {
-    <mat-error>Value must be greater than the minimum.</mat-error>
-  }
-  @if (form.get('username')?.hasError('exclusiveMaximum')) {
-    <mat-error>Value must be less than the maximum.</mat-error>
-  }
-  @if (form.get('username')?.hasError('multipleOf')) {
-    <mat-error>Value is not a valid multiple.</mat-error>
-  }
-</mat-form-field>
-
-
-<mat-form-field>
-  <mat-label>FirstName</mat-label>
-  <input matInput formControlName="firstName" type="text">
-  @if (form.get('firstName')?.hasError('required')) {
-    <mat-error>This field is required.</mat-error>
-  }
-  @if (form.get('firstName')?.hasError('minlength')) {
-    <mat-error>Must be at least undefined characters long.</mat-error>
-  }
-  @if (form.get('firstName')?.hasError('maxlength')) {
-    <mat-error>Cannot exceed undefined characters.</mat-error>
-  }
-  @if (form.get('firstName')?.hasError('pattern')) {
-    <mat-error>Invalid format.</mat-error>
-  }
-  @if (form.get('firstName')?.hasError('email')) {
-      <mat-error>Please enter a valid email address.</mat-error>
-    }
-  @if (form.get('firstName')?.hasError('exclusiveMinimum')) {
-    <mat-error>Value must be greater than the minimum.</mat-error>
-  }
-  @if (form.get('firstName')?.hasError('exclusiveMaximum')) {
-    <mat-error>Value must be less than the maximum.</mat-error>
-  }
-  @if (form.get('firstName')?.hasError('multipleOf')) {
-    <mat-error>Value is not a valid multiple.</mat-error>
-  }
-</mat-form-field>
-
-
-<mat-form-field>
-  <mat-label>LastName</mat-label>
-  <input matInput formControlName="lastName" type="text">
-  @if (form.get('lastName')?.hasError('required')) {
-    <mat-error>This field is required.</mat-error>
-  }
-  @if (form.get('lastName')?.hasError('minlength')) {
-    <mat-error>Must be at least undefined characters long.</mat-error>
-  }
-  @if (form.get('lastName')?.hasError('maxlength')) {
-    <mat-error>Cannot exceed undefined characters.</mat-error>
-  }
-  @if (form.get('lastName')?.hasError('pattern')) {
-    <mat-error>Invalid format.</mat-error>
-  }
-  @if (form.get('lastName')?.hasError('email')) {
-      <mat-error>Please enter a valid email address.</mat-error>
-    }
-  @if (form.get('lastName')?.hasError('exclusiveMinimum')) {
-    <mat-error>Value must be greater than the minimum.</mat-error>
-  }
-  @if (form.get('lastName')?.hasError('exclusiveMaximum')) {
-    <mat-error>Value must be less than the maximum.</mat-error>
-  }
-  @if (form.get('lastName')?.hasError('multipleOf')) {
-    <mat-error>Value is not a valid multiple.</mat-error>
-  }
-</mat-form-field>
-
-
-<mat-form-field>
-  <mat-label>Email</mat-label>
-  <input matInput formControlName="email" type="text">
-  @if (form.get('email')?.hasError('required')) {
-    <mat-error>This field is required.</mat-error>
-  }
-  @if (form.get('email')?.hasError('minlength')) {
-    <mat-error>Must be at least undefined characters long.</mat-error>
-  }
-  @if (form.get('email')?.hasError('maxlength')) {
-    <mat-error>Cannot exceed undefined characters.</mat-error>
-  }
-  @if (form.get('email')?.hasError('pattern')) {
-    <mat-error>Invalid format.</mat-error>
-  }
-  @if (form.get('email')?.hasError('email')) {
-      <mat-error>Please enter a valid email address.</mat-error>
-    }
-  @if (form.get('email')?.hasError('exclusiveMinimum')) {
-    <mat-error>Value must be greater than the minimum.</mat-error>
-  }
-  @if (form.get('email')?.hasError('exclusiveMaximum')) {
-    <mat-error>Value must be less than the maximum.</mat-error>
-  }
-  @if (form.get('email')?.hasError('multipleOf')) {
-    <mat-error>Value is not a valid multiple.</mat-error>
-  }
-</mat-form-field>
-
-
-<mat-form-field>
-  <mat-label>Password</mat-label>
-  <input matInput formControlName="password" type="text">
-  @if (form.get('password')?.hasError('required')) {
-    <mat-error>This field is required.</mat-error>
-  }
-  @if (form.get('password')?.hasError('minlength')) {
-    <mat-error>Must be at least undefined characters long.</mat-error>
-  }
-  @if (form.get('password')?.hasError('maxlength')) {
-    <mat-error>Cannot exceed undefined characters.</mat-error>
-  }
-  @if (form.get('password')?.hasError('pattern')) {
-    <mat-error>Invalid format.</mat-error>
-  }
-  @if (form.get('password')?.hasError('email')) {
-      <mat-error>Please enter a valid email address.</mat-error>
-    }
-  @if (form.get('password')?.hasError('exclusiveMinimum')) {
-    <mat-error>Value must be greater than the minimum.</mat-error>
-  }
-  @if (form.get('password')?.hasError('exclusiveMaximum')) {
-    <mat-error>Value must be less than the maximum.</mat-error>
-  }
-  @if (form.get('password')?.hasError('multipleOf')) {
-    <mat-error>Value is not a valid multiple.</mat-error>
-  }
-</mat-form-field>
-
-
-<mat-form-field>
-  <mat-label>Phone</mat-label>
-  <input matInput formControlName="phone" type="text">
-  @if (form.get('phone')?.hasError('required')) {
-    <mat-error>This field is required.</mat-error>
-  }
-  @if (form.get('phone')?.hasError('minlength')) {
-    <mat-error>Must be at least undefined characters long.</mat-error>
-  }
-  @if (form.get('phone')?.hasError('maxlength')) {
-    <mat-error>Cannot exceed undefined characters.</mat-error>
-  }
-  @if (form.get('phone')?.hasError('pattern')) {
-    <mat-error>Invalid format.</mat-error>
-  }
-  @if (form.get('phone')?.hasError('email')) {
-      <mat-error>Please enter a valid email address.</mat-error>
-    }
-  @if (form.get('phone')?.hasError('exclusiveMinimum')) {
-    <mat-error>Value must be greater than the minimum.</mat-error>
-  }
-  @if (form.get('phone')?.hasError('exclusiveMaximum')) {
-    <mat-error>Value must be less than the maximum.</mat-error>
-  }
-  @if (form.get('phone')?.hasError('multipleOf')) {
-    <mat-error>Value is not a valid multiple.</mat-error>
-  }
-</mat-form-field>
-
-
-<mat-form-field>
-  <mat-label>UserStatus</mat-label>
-  <input matInput formControlName="userStatus" type="number">
-  @if (form.get('userStatus')?.hasError('required')) {
-    <mat-error>This field is required.</mat-error>
-  }
-  @if (form.get('userStatus')?.hasError('minlength')) {
-    <mat-error>Must be at least undefined characters long.</mat-error>
-  }
-  @if (form.get('userStatus')?.hasError('maxlength')) {
-    <mat-error>Cannot exceed undefined characters.</mat-error>
-  }
-  @if (form.get('userStatus')?.hasError('pattern')) {
-    <mat-error>Invalid format.</mat-error>
-  }
-  @if (form.get('userStatus')?.hasError('email')) {
-      <mat-error>Please enter a valid email address.</mat-error>
-    }
-  @if (form.get('userStatus')?.hasError('exclusiveMinimum')) {
-    <mat-error>Value must be greater than the minimum.</mat-error>
-  }
-  @if (form.get('userStatus')?.hasError('exclusiveMaximum')) {
-    <mat-error>Value must be less than the maximum.</mat-error>
-  }
-  @if (form.get('userStatus')?.hasError('multipleOf')) {
-    <mat-error>Value is not a valid multiple.</mat-error>
-  }
-</mat-form-field>
-
+        <mat-label>Id</mat-label>
+        <input matInput="" formControlName="id" type="number"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input matInput="" formControlName="username" type="text"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>FirstName</mat-label>
+        <input matInput="" formControlName="firstName" type="text"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>LastName</mat-label>
+        <input matInput="" formControlName="lastName" type="text"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput="" formControlName="email" type="text"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput="" formControlName="password" type="text"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Phone</mat-label>
+        <input matInput="" formControlName="phone" type="text"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>UserStatus</mat-label>
+        <input matInput="" formControlName="userStatus" type="number"/>
+      </mat-form-field>
     </div>
-
     <div class="admin-form-actions">
-      <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
-      <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || form.pristine">
+      <button mat-stroked-button="" type="button" (click)="onCancel()">Cancel</button>
+      <button mat-flat-button="" color="primary" type="submit" [disabled]="form.invalid || form.pristine">
+
         @if (isEditMode()) {
           <span>Save Changes</span>
         } @else {

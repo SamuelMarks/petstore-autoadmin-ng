@@ -1,120 +1,127 @@
-import { Component, inject, input, computed, effect } from "@angular/core";
-import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
-import { Router, ActivatedRoute } from "@angular/router";
-import * as models from "../../../models";
-import { PetService } from "../../../services";
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from "@angular/common";
-import { ReactiveFormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
-import { MatInputModule } from "@angular/material/input";
-import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
-import { MatChipsModule } from "@angular/material/chips";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatSliderModule } from "@angular/material/slider";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatTableModule } from "@angular/material/table";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSortModule } from "@angular/material/sort";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { Subscription } from 'rxjs';
+import { PetService } from '../../../services/pet.service';
 
 @Component({
-                selector: 'app-pet-form',
-                standalone: true,
-                imports: [CommonModule, MatButtonModule, MatChipsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatRadioModule, ReactiveFormsModule, RouterModule],
-                templateUrl: './pet-form.component.html',
-                styleUrls: ['./pet-form.component.scss']
-            })
-export class PetFormComponent {
-    form!: FormGroup;
-    private readonly fb = inject(FormBuilder);
-    private readonly router = inject(Router);
-    private readonly route = inject(ActivatedRoute);
-    private readonly petService = inject(PetService);
-    id = input<string | null>(null);
-    isEditMode = computed(() => !!this.id());
-    formTitle = computed(() => this.isEditMode() ? 'Edit Pet' : 'Create Pet');
-    readonly StatusOptions = ["available","pending","sold"];
+  selector: 'app-pet-form',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSliderModule,
+    MatButtonToggleModule,
+    MatSnackBarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressBarModule,
+    MatTooltipModule,
+    MatToolbarModule
+  ],
+  templateUrl: './pet-form.component.html',
+  styleUrl: './pet-form.component.scss'
+})
+class PetFormComponent implements OnInit, OnDestroy {
+  readonly fb = inject(FormBuilder);
+  readonly route = inject(ActivatedRoute);
+  readonly router = inject(Router);
+  readonly snackBar = inject(MatSnackBar);
+  readonly petService: PetService = inject(PetService);
+  form!: FormGroup;
+  id = signal<string | null>(null);
+  isEditMode = computed(() => !!this.id());
+  formTitle = computed(() => this.isEditMode() ? `Edit ${resource.modelName}` : `Create ${resource.modelName}`);
+  subscriptions: Subscription[] = [];
+  readonly StatusOptions = ["available", "pending", "sold"];
 
-    constructor() {
-
-                        this.initForm();
-                        effect((onCleanup) => {
-                            const id = this.id();
-                            // When the id changes, we are in a new state. Reset the form.
-                            this.form.reset();
-
-                            if (this.isEditMode() && id) {
-                                const sub = this.petService.getPetById(id).subscribe((entity: any) => {
-                                   if (entity) this.patchForm(entity as models.Pet);
-                                });
-                                onCleanup(() => sub.unsubscribe());
-                            }
-
-                            // For polymorphic forms, set up a subscription to the discriminator field
-                            if (false) {
-                                 const discriminatorCtrl = this.form.get('undefined');
-                                 if (discriminatorCtrl) {
-                                     const sub = discriminatorCtrl.valueChanges.subscribe(type => {
-                                         this.updateFormForPetType(type);
-                                     });
-                                     onCleanup(() => sub.unsubscribe());
-                                 }
-                            }
-                        });
-                    
+  ngOnInit() {
+    this.initForm();
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.id.set(id);
+      const sub = this.petService.getPetById(id).subscribe(entity => {
+        this.form.patchValue(entity);
+      });
+      this.subscriptions.push(sub);
     }
+  }
 
-    private initForm() {
-        this.form = this.fb.group({ id: this.fb.control(null),
-        category: this.fb.group({ id: this.fb.control(null),
-        name: this.fb.control(null) }),
-        name: this.fb.control(null, [Validators.required]),
-        photoUrls: this.fb.control(null, [Validators.required]),
-        tags: this.fb.array([]),
-        status: this.fb.control(null) });
+  private initForm() {
+    this.form = this.fb.group({
+      'id': this.fb.control(null),
+      'category': this.fb.group({
+        'id': this.fb.control(null),
+        'name': this.fb.control(null)
+      }),
+      'name': this.fb.control(null, [Validators.required]),
+      'photoUrls': this.fb.array([]),
+      'tags': this.fb.array([]),
+      'status': this.fb.control(null)
+    });
+  }
+
+  onSubmit() {
+    if (!this.form.valid) {
+      return;
     }
-
-    get tagsArray(): FormArray {
-        return this.form.get('tags') as FormArray;
+    const finalPayload = this.form.getRawValue();
+    if (this.isEditMode()) {
+      console.error('Form is in edit mode, but no update operation is available.');
+      return;
     }
+    const action$ = this.petService.addPet(finalPayload);
+    const sub = action$.subscribe({
+      next: () => {
+        this.snackBar.open('Pet saved successfully!', 'Close', { duration: 3000 });
+        this.router.navigate(['../'], { relativeTo: this.route });
+      },
+      error: (err) => {
+        console.error('Error saving Pet', err);
+        this.snackBar.open('Error saving Pet', 'Close', { duration: 5000, panelClass: 'error-snackbar' });
+      }
+    });
+    this.subscriptions.push(sub);
+  }
 
-    createTagsArrayItem(item?: any): FormGroup {
-        return this.fb.group({ id: this.fb.control(null),
-        name: this.fb.control(null) });
-    }
+  onCancel() {
+    this.router.navigate(['../'], { relativeTo: this.route });
+  }
 
-    addTagsArrayItem() {
-        this.tagsArray.push(this.createTagsArrayItem());
-    }
-
-    removeTagsArrayItem(index: number) {
-        this.tagsArray.removeAt(index);
-    }
-
-    patchForm(entity: models.Pet) {
-
-                const { tags, ...rest } = entity;
-                this.form.patchValue(rest);
-                
-                    if (entity.tags && Array.isArray(entity.tags)) {
-                        this.tagsArray.clear();
-                        entity.tags.forEach((item: any) => {
-                            const itemGroup = this.createTagsArrayItem(item);
-                            itemGroup.patchValue(item);
-                            this.tagsArray.push(itemGroup);
-                        });
-                    }
-            
-    }
-
-    onSubmit() {
-
-        if (this.form.invalid) { return; }
-        const finalPayload = this.form.value;
-        const action$ = this.isEditMode()
-          ? this.petService.updatePet(this.id()!, finalPayload)
-          : this.petService.createPet(finalPayload);
-        action$.subscribe(() => this.onCancel());
-            
-    }
-
-    onCancel() {
-        this.router.navigate(['..'], { relativeTo: this.route });
-    }
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 }
