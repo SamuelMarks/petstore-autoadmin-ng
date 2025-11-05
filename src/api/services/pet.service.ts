@@ -5,9 +5,8 @@
 import { inject, Injectable } from "@angular/core";
 import { HttpClient, HttpContext, HttpEvent, HttpParams, HttpResponse } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { Pet, RequestOptions } from "../models";
+import { ApiResponse, Pet, RequestOptions } from "../models";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from "../tokens";
-import { HttpParamsBuilder } from "../utils/http-params-builder";
 
 @Injectable({ providedIn: 'root' })
 export class PetService {
@@ -28,9 +27,9 @@ export class PetService {
    * @param file (optional)
    * @param options The options for this request, with response observation enabled.
    */
-  uploadFile(petId: number, additionalMetadata?: string, file?: any, options: RequestOptions & {
+  uploadFile(petId: number, additionalMetadata: string, file: File | Blob, options: RequestOptions & {
     observe: 'response'
-  }): Observable<HttpResponse<void>>;
+  }): Observable<HttpResponse<ApiResponse>>;
   /**
    * uploadFile.
    * @param petId
@@ -38,9 +37,9 @@ export class PetService {
    * @param file (optional)
    * @param options The options for this request, with event observation enabled.
    */
-  uploadFile(petId: number, additionalMetadata?: string, file?: any, options: RequestOptions & {
+  uploadFile(petId: number, additionalMetadata: string, file: File | Blob, options: RequestOptions & {
     observe: 'events'
-  }): Observable<HttpEvent<void>>;
+  }): Observable<HttpEvent<ApiResponse>>;
   /**
    * uploadFile.
    * @param petId
@@ -48,7 +47,7 @@ export class PetService {
    * @param file (optional)
    * @param options The options for this request, with a blob response type.
    */
-  uploadFile(petId: number, additionalMetadata?: string, file?: any, options: RequestOptions & {
+  uploadFile(petId: number, additionalMetadata: string, file: File | Blob, options: RequestOptions & {
     responseType: 'blob'
   }): Observable<Blob>;
   /**
@@ -58,7 +57,7 @@ export class PetService {
    * @param file (optional)
    * @param options The options for this request, with a text response type.
    */
-  uploadFile(petId: number, additionalMetadata?: string, file?: any, options: RequestOptions & {
+  uploadFile(petId: number, additionalMetadata: string, file: File | Blob, options: RequestOptions & {
     responseType: 'text'
   }): Observable<string>;
   /**
@@ -68,17 +67,25 @@ export class PetService {
    * @param file (optional)
    * @param options The options for this request.
    */
-  uploadFile(petId: number, additionalMetadata?: string, file?: any, options?: RequestOptions & {
+  uploadFile(petId: number, additionalMetadata?: string, file?: File | Blob, options?: RequestOptions & {
     observe?: 'body'
-  }): Observable<void>;
+  }): Observable<ApiResponse>;
   /** uploads an image */
-  uploadFile(petId: number, additionalMetadata?: string, file?: any, options?: RequestOptions & {
+  uploadFile(petId: number, additionalMetadata?: string, file?: File | Blob, options?: RequestOptions & {
     observe?: "body" | "events" | "response",
     responseType?: "blob" | "text" | "json"
   }): Observable<any> {
     const url = `${this.basePath}/pet/${petId}/uploadImage`;
     const finalOptions: any = { ...options };
     finalOptions.context = this.createContextWithClientId(options?.context);
+    const formData = new FormData();
+    if (additionalMetadata != null) {
+      formData.append('additionalMetadata', additionalMetadata);
+    }
+    if (file != null) {
+      formData.append('file', file);
+    }
+    finalOptions.body = formData;
     return this.http.request('post', url, finalOptions);
   }
 
@@ -87,25 +94,25 @@ export class PetService {
    * @param pet (optional)
    * @param options The options for this request, with response observation enabled.
    */
-  addPet(pet?: Pet, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+  addPet(pet: Pet, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
   /**
    * addPet.
    * @param pet (optional)
    * @param options The options for this request, with event observation enabled.
    */
-  addPet(pet?: Pet, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+  addPet(pet: Pet, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
   /**
    * addPet.
    * @param pet (optional)
    * @param options The options for this request, with a blob response type.
    */
-  addPet(pet?: Pet, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+  addPet(pet: Pet, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
   /**
    * addPet.
    * @param pet (optional)
    * @param options The options for this request, with a text response type.
    */
-  addPet(pet?: Pet, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+  addPet(pet: Pet, options: RequestOptions & { responseType: 'text' }): Observable<string>;
   /**
    * addPet.
    * @param pet (optional)
@@ -129,25 +136,25 @@ export class PetService {
    * @param pet (optional)
    * @param options The options for this request, with response observation enabled.
    */
-  updatePet(pet?: Pet, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+  updatePet(pet: Pet, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
   /**
    * updatePet.
    * @param pet (optional)
    * @param options The options for this request, with event observation enabled.
    */
-  updatePet(pet?: Pet, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+  updatePet(pet: Pet, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
   /**
    * updatePet.
    * @param pet (optional)
    * @param options The options for this request, with a blob response type.
    */
-  updatePet(pet?: Pet, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+  updatePet(pet: Pet, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
   /**
    * updatePet.
    * @param pet (optional)
    * @param options The options for this request, with a text response type.
    */
-  updatePet(pet?: Pet, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+  updatePet(pet: Pet, options: RequestOptions & { responseType: 'text' }): Observable<string>;
   /**
    * updatePet.
    * @param pet (optional)
@@ -173,7 +180,7 @@ export class PetService {
    */
   findPetsByStatus(status: 'available' | 'pending' | 'sold'[], options: RequestOptions & {
     observe: 'response'
-  }): Observable<HttpResponse<void>>;
+  }): Observable<HttpResponse<Pet[]>>;
   /**
    * findPetsByStatus.
    * @param status
@@ -181,7 +188,7 @@ export class PetService {
    */
   findPetsByStatus(status: 'available' | 'pending' | 'sold'[], options: RequestOptions & {
     observe: 'events'
-  }): Observable<HttpEvent<void>>;
+  }): Observable<HttpEvent<Pet[]>>;
   /**
    * findPetsByStatus.
    * @param status
@@ -205,7 +212,7 @@ export class PetService {
    */
   findPetsByStatus(status: 'available' | 'pending' | 'sold'[], options?: RequestOptions & {
     observe?: 'body'
-  }): Observable<void>;
+  }): Observable<Pet[]>;
   /**
    * Finds Pets by status
    *
@@ -218,9 +225,13 @@ export class PetService {
     const url = `${this.basePath}/pet/findByStatus`;
     const finalOptions: any = { ...options };
     finalOptions.context = this.createContextWithClientId(options?.context);
-    let requestParams = new HttpParams({ fromObject: options?.params || {} });
+    let requestParams = new HttpParams({ fromObject: options?.params as any || {} });
     if (status != null) {
-      requestParams = HttpParamsBuilder.addToHttpParams(requestParams, status, 'status');
+      if (Array.isArray(status)) {
+        status.forEach(v => requestParams = requestParams.append('status', String(v)));
+      } else {
+        requestParams = requestParams.append('status', String(status));
+      }
     }
     finalOptions.params = requestParams;
     return this.http.request('get', url, finalOptions);
@@ -231,13 +242,13 @@ export class PetService {
    * @param tags
    * @param options The options for this request, with response observation enabled.
    */
-  findPetsByTags(tags: string[], options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+  findPetsByTags(tags: string[], options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<Pet[]>>;
   /**
    * findPetsByTags.
    * @param tags
    * @param options The options for this request, with event observation enabled.
    */
-  findPetsByTags(tags: string[], options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+  findPetsByTags(tags: string[], options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<Pet[]>>;
   /**
    * findPetsByTags.
    * @param tags
@@ -255,7 +266,7 @@ export class PetService {
    * @param tags
    * @param options The options for this request.
    */
-  findPetsByTags(tags: string[], options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+  findPetsByTags(tags: string[], options?: RequestOptions & { observe?: 'body' }): Observable<Pet[]>;
   /**
    * Finds Pets by tags
    *
@@ -268,9 +279,13 @@ export class PetService {
     const url = `${this.basePath}/pet/findByTags`;
     const finalOptions: any = { ...options };
     finalOptions.context = this.createContextWithClientId(options?.context);
-    let requestParams = new HttpParams({ fromObject: options?.params || {} });
+    let requestParams = new HttpParams({ fromObject: options?.params as any || {} });
     if (tags != null) {
-      requestParams = HttpParamsBuilder.addToHttpParams(requestParams, tags, 'tags');
+      if (Array.isArray(tags)) {
+        tags.forEach(v => requestParams = requestParams.append('tags', String(v)));
+      } else {
+        requestParams = requestParams.append('tags', String(tags));
+      }
     }
     finalOptions.params = requestParams;
     return this.http.request('get', url, finalOptions);
@@ -281,13 +296,13 @@ export class PetService {
    * @param petId
    * @param options The options for this request, with response observation enabled.
    */
-  getPetById(petId: number, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+  getPetById(petId: number, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<Pet>>;
   /**
    * getPetById.
    * @param petId
    * @param options The options for this request, with event observation enabled.
    */
-  getPetById(petId: number, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+  getPetById(petId: number, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<Pet>>;
   /**
    * getPetById.
    * @param petId
@@ -305,7 +320,7 @@ export class PetService {
    * @param petId
    * @param options The options for this request.
    */
-  getPetById(petId: number, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+  getPetById(petId: number, options?: RequestOptions & { observe?: 'body' }): Observable<Pet>;
   /**
    * Find pet by ID
    *
@@ -328,7 +343,7 @@ export class PetService {
    * @param status (optional)
    * @param options The options for this request, with response observation enabled.
    */
-  updatePetWithForm(petId: number, name?: string, status?: string, options: RequestOptions & {
+  updatePetWithForm(petId: number, name: string, status: string, options: RequestOptions & {
     observe: 'response'
   }): Observable<HttpResponse<void>>;
   /**
@@ -338,7 +353,7 @@ export class PetService {
    * @param status (optional)
    * @param options The options for this request, with event observation enabled.
    */
-  updatePetWithForm(petId: number, name?: string, status?: string, options: RequestOptions & {
+  updatePetWithForm(petId: number, name: string, status: string, options: RequestOptions & {
     observe: 'events'
   }): Observable<HttpEvent<void>>;
   /**
@@ -348,7 +363,7 @@ export class PetService {
    * @param status (optional)
    * @param options The options for this request, with a blob response type.
    */
-  updatePetWithForm(petId: number, name?: string, status?: string, options: RequestOptions & {
+  updatePetWithForm(petId: number, name: string, status: string, options: RequestOptions & {
     responseType: 'blob'
   }): Observable<Blob>;
   /**
@@ -358,7 +373,7 @@ export class PetService {
    * @param status (optional)
    * @param options The options for this request, with a text response type.
    */
-  updatePetWithForm(petId: number, name?: string, status?: string, options: RequestOptions & {
+  updatePetWithForm(petId: number, name: string, status: string, options: RequestOptions & {
     responseType: 'text'
   }): Observable<string>;
   /**
@@ -379,6 +394,14 @@ export class PetService {
     const url = `${this.basePath}/pet/${petId}`;
     const finalOptions: any = { ...options };
     finalOptions.context = this.createContextWithClientId(options?.context);
+    let formParams = new HttpParams({ fromObject: options?.params as any || {} });
+    if (name != null) {
+      formParams = formParams.set('name', String(name));
+    }
+    if (status != null) {
+      formParams = formParams.set('status', String(status));
+    }
+    finalOptions.body = formParams;
     return this.http.request('post', url, finalOptions);
   }
 
@@ -388,7 +411,7 @@ export class PetService {
    * @param apiKey (optional)
    * @param options The options for this request, with response observation enabled.
    */
-  deletePet(petId: number, apiKey?: string, options: RequestOptions & {
+  deletePet(petId: number, apiKey: string, options: RequestOptions & {
     observe: 'response'
   }): Observable<HttpResponse<void>>;
   /**
@@ -397,7 +420,7 @@ export class PetService {
    * @param apiKey (optional)
    * @param options The options for this request, with event observation enabled.
    */
-  deletePet(petId: number, apiKey?: string, options: RequestOptions & {
+  deletePet(petId: number, apiKey: string, options: RequestOptions & {
     observe: 'events'
   }): Observable<HttpEvent<void>>;
   /**
@@ -406,14 +429,14 @@ export class PetService {
    * @param apiKey (optional)
    * @param options The options for this request, with a blob response type.
    */
-  deletePet(petId: number, apiKey?: string, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+  deletePet(petId: number, apiKey: string, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
   /**
    * deletePet.
    * @param petId
    * @param apiKey (optional)
    * @param options The options for this request, with a text response type.
    */
-  deletePet(petId: number, apiKey?: string, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+  deletePet(petId: number, apiKey: string, options: RequestOptions & { responseType: 'text' }): Observable<string>;
   /**
    * deletePet.
    * @param petId
@@ -429,6 +452,11 @@ export class PetService {
     const url = `${this.basePath}/pet/${petId}`;
     const finalOptions: any = { ...options };
     finalOptions.context = this.createContextWithClientId(options?.context);
+    let requestHeaders = options?.headers || {};
+    if (apiKey != null) {
+      requestHeaders = { ...requestHeaders, ['api_key']: String(apiKey) };
+    }
+    finalOptions.headers = requestHeaders;
     return this.http.request('delete', url, finalOptions);
   }
 }

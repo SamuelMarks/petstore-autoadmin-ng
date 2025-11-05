@@ -25,13 +25,13 @@ export class StoreService {
    *
    * @param options The options for this request, with response observation enabled.
    */
-  getInventory(options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+  getInventory(options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<Record<string, number>>>;
   /**
    * getInventory.
    *
    * @param options The options for this request, with event observation enabled.
    */
-  getInventory(options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+  getInventory(options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<Record<string, number>>>;
   /**
    * getInventory.
    *
@@ -49,7 +49,7 @@ export class StoreService {
    *
    * @param options The options for this request.
    */
-  getInventory(options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+  getInventory(options?: RequestOptions & { observe?: 'body' }): Observable<Record<string, number>>;
   /**
    * Returns pet inventories by status
    *
@@ -70,31 +70,31 @@ export class StoreService {
    * @param order (optional)
    * @param options The options for this request, with response observation enabled.
    */
-  placeOrder(order?: Order, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+  placeOrder(order: Order, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<Order>>;
   /**
    * placeOrder.
    * @param order (optional)
    * @param options The options for this request, with event observation enabled.
    */
-  placeOrder(order?: Order, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+  placeOrder(order: Order, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<Order>>;
   /**
    * placeOrder.
    * @param order (optional)
    * @param options The options for this request, with a blob response type.
    */
-  placeOrder(order?: Order, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+  placeOrder(order: Order, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
   /**
    * placeOrder.
    * @param order (optional)
    * @param options The options for this request, with a text response type.
    */
-  placeOrder(order?: Order, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+  placeOrder(order: Order, options: RequestOptions & { responseType: 'text' }): Observable<string>;
   /**
    * placeOrder.
    * @param order (optional)
    * @param options The options for this request.
    */
-  placeOrder(order?: Order, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+  placeOrder(order?: Order, options?: RequestOptions & { observe?: 'body' }): Observable<Order>;
   /** Place an order for a pet */
   placeOrder(order?: Order, options?: RequestOptions & {
     observe?: "body" | "events" | "response",
@@ -112,13 +112,13 @@ export class StoreService {
    * @param orderId
    * @param options The options for this request, with response observation enabled.
    */
-  getOrderById(orderId: number, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+  getOrderById(orderId: number, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<Order>>;
   /**
    * getOrderById.
    * @param orderId
    * @param options The options for this request, with event observation enabled.
    */
-  getOrderById(orderId: number, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+  getOrderById(orderId: number, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<Order>>;
   /**
    * getOrderById.
    * @param orderId
@@ -136,7 +136,7 @@ export class StoreService {
    * @param orderId
    * @param options The options for this request.
    */
-  getOrderById(orderId: number, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+  getOrderById(orderId: number, options?: RequestOptions & { observe?: 'body' }): Observable<Order>;
   /**
    * Find purchase order by ID
    *

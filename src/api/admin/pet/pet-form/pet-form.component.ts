@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
@@ -23,13 +23,28 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { Subscription } from 'rxjs';
 import { PetService } from '../../../services/pet.service';
 
+export interface PetForm {
+  additionalMetadata: FormControl<any | null>;
+  file: FormControl<any | null>;
+  name: FormControl<string | null>;
+  status: FormControl<'available' | 'pending' | 'sold' | null>;
+  id: FormControl<number | null>;
+  category: FormGroup<CategoryForm>;
+  photoUrls: FormArray<FormControl<string | null>>;
+  tags: FormArray<FormControl<Tag | null>>;
+}
+
+interface CategoryForm {
+  id: FormControl<number | null>;
+  name: FormControl<string | null>;
+}
+
 @Component({
   selector: 'app-pet-form',
   standalone: true,
   imports: [
-    CommonModule,
-    RouterModule,
     ReactiveFormsModule,
+    RouterModule,
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
@@ -55,16 +70,16 @@ import { PetService } from '../../../services/pet.service';
   templateUrl: './pet-form.component.html',
   styleUrl: './pet-form.component.scss'
 })
-class PetFormComponent implements OnInit, OnDestroy {
+export class PetFormComponent implements OnInit, OnDestroy {
   readonly fb = inject(FormBuilder);
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
   readonly snackBar = inject(MatSnackBar);
   readonly petService: PetService = inject(PetService);
-  form!: FormGroup;
+  form!: FormGroup<PetForm>;
   id = signal<string | null>(null);
   isEditMode = computed(() => !!this.id());
-  formTitle = computed(() => this.isEditMode() ? `Edit ${resource.modelName}` : `Create ${resource.modelName}`);
+  formTitle = computed(() => this.isEditMode() ? 'Edit Pet' : 'Create Pet');
   subscriptions: Subscription[] = [];
   readonly StatusOptions = ["available", "pending", "sold"];
 
@@ -74,23 +89,25 @@ class PetFormComponent implements OnInit, OnDestroy {
     if (id) {
       this.id.set(id);
       const sub = this.petService.getPetById(id).subscribe(entity => {
-        this.form.patchValue(entity);
+        this.form.patchValue(entity as any);
       });
       this.subscriptions.push(sub);
     }
   }
 
   private initForm() {
-    this.form = this.fb.group({
-      'id': this.fb.control(null),
+    this.form = new FormGroup<PetForm>({
+      'additionalMetadata': new FormControl(null),
+      'file': new FormControl(null),
+      'name': new FormControl(null, [Validators.required]),
+      'status': new FormControl(null),
+      'id': new FormControl(null),
       'category': this.fb.group({
-        'id': this.fb.control(null),
-        'name': this.fb.control(null)
+        'id': new FormControl(null),
+        'name': new FormControl(null)
       }),
-      'name': this.fb.control(null, [Validators.required]),
       'photoUrls': this.fb.array([]),
-      'tags': this.fb.array([]),
-      'status': this.fb.control(null)
+      'tags': this.fb.array([])
     });
   }
 

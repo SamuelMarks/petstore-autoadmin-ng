@@ -7,7 +7,6 @@ import { HttpClient, HttpContext, HttpEvent, HttpParams, HttpResponse } from "@a
 import { Observable } from "rxjs";
 import { RequestOptions, User } from "../models";
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from "../tokens";
-import { HttpParamsBuilder } from "../utils/http-params-builder";
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -26,7 +25,7 @@ export class UserService {
    * @param user (optional)
    * @param options The options for this request, with response observation enabled.
    */
-  createUsersWithListInput(user?: User[], options: RequestOptions & {
+  createUsersWithListInput(user: User[], options: RequestOptions & {
     observe: 'response'
   }): Observable<HttpResponse<void>>;
   /**
@@ -34,19 +33,19 @@ export class UserService {
    * @param user (optional)
    * @param options The options for this request, with event observation enabled.
    */
-  createUsersWithListInput(user?: User[], options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+  createUsersWithListInput(user: User[], options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
   /**
    * createUsersWithListInput.
    * @param user (optional)
    * @param options The options for this request, with a blob response type.
    */
-  createUsersWithListInput(user?: User[], options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+  createUsersWithListInput(user: User[], options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
   /**
    * createUsersWithListInput.
    * @param user (optional)
    * @param options The options for this request, with a text response type.
    */
-  createUsersWithListInput(user?: User[], options: RequestOptions & { responseType: 'text' }): Observable<string>;
+  createUsersWithListInput(user: User[], options: RequestOptions & { responseType: 'text' }): Observable<string>;
   /**
    * createUsersWithListInput.
    * @param user (optional)
@@ -70,13 +69,13 @@ export class UserService {
    * @param username
    * @param options The options for this request, with response observation enabled.
    */
-  getUserByName(username: string, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+  getUserByName(username: string, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<User>>;
   /**
    * getUserByName.
    * @param username
    * @param options The options for this request, with event observation enabled.
    */
-  getUserByName(username: string, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+  getUserByName(username: string, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<User>>;
   /**
    * getUserByName.
    * @param username
@@ -94,7 +93,7 @@ export class UserService {
    * @param username
    * @param options The options for this request.
    */
-  getUserByName(username: string, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+  getUserByName(username: string, options?: RequestOptions & { observe?: 'body' }): Observable<User>;
   /** Get user by user name */
   getUserByName(username: string, options?: RequestOptions & {
     observe?: "body" | "events" | "response",
@@ -112,7 +111,7 @@ export class UserService {
    * @param user (optional)
    * @param options The options for this request, with response observation enabled.
    */
-  updateUser(username: string, user?: User, options: RequestOptions & {
+  updateUser(username: string, user: User, options: RequestOptions & {
     observe: 'response'
   }): Observable<HttpResponse<void>>;
   /**
@@ -121,7 +120,7 @@ export class UserService {
    * @param user (optional)
    * @param options The options for this request, with event observation enabled.
    */
-  updateUser(username: string, user?: User, options: RequestOptions & {
+  updateUser(username: string, user: User, options: RequestOptions & {
     observe: 'events'
   }): Observable<HttpEvent<void>>;
   /**
@@ -130,14 +129,14 @@ export class UserService {
    * @param user (optional)
    * @param options The options for this request, with a blob response type.
    */
-  updateUser(username: string, user?: User, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+  updateUser(username: string, user: User, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
   /**
    * updateUser.
    * @param username
    * @param user (optional)
    * @param options The options for this request, with a text response type.
    */
-  updateUser(username: string, user?: User, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+  updateUser(username: string, user: User, options: RequestOptions & { responseType: 'text' }): Observable<string>;
   /**
    * updateUser.
    * @param username
@@ -214,7 +213,7 @@ export class UserService {
    */
   loginUser(username: string, password: string, options: RequestOptions & {
     observe: 'response'
-  }): Observable<HttpResponse<void>>;
+  }): Observable<HttpResponse<string>>;
   /**
    * loginUser.
    * @param username
@@ -223,7 +222,7 @@ export class UserService {
    */
   loginUser(username: string, password: string, options: RequestOptions & {
     observe: 'events'
-  }): Observable<HttpEvent<void>>;
+  }): Observable<HttpEvent<string>>;
   /**
    * loginUser.
    * @param username
@@ -244,7 +243,7 @@ export class UserService {
    * @param password
    * @param options The options for this request.
    */
-  loginUser(username: string, password: string, options?: RequestOptions & { observe?: 'body' }): Observable<void>;
+  loginUser(username: string, password: string, options?: RequestOptions & { observe?: 'body' }): Observable<string>;
   /** Logs user into the system */
   loginUser(username: string, password: string, options?: RequestOptions & {
     observe?: "body" | "events" | "response",
@@ -253,12 +252,20 @@ export class UserService {
     const url = `${this.basePath}/user/login`;
     const finalOptions: any = { ...options };
     finalOptions.context = this.createContextWithClientId(options?.context);
-    let requestParams = new HttpParams({ fromObject: options?.params || {} });
+    let requestParams = new HttpParams({ fromObject: options?.params as any || {} });
     if (username != null) {
-      requestParams = HttpParamsBuilder.addToHttpParams(requestParams, username, 'username');
+      if (Array.isArray(username)) {
+        username.forEach(v => requestParams = requestParams.append('username', String(v)));
+      } else {
+        requestParams = requestParams.append('username', String(username));
+      }
     }
     if (password != null) {
-      requestParams = HttpParamsBuilder.addToHttpParams(requestParams, password, 'password');
+      if (Array.isArray(password)) {
+        password.forEach(v => requestParams = requestParams.append('password', String(v)));
+      } else {
+        requestParams = requestParams.append('password', String(password));
+      }
     }
     finalOptions.params = requestParams;
     return this.http.request('get', url, finalOptions);
@@ -310,7 +317,7 @@ export class UserService {
    * @param user (optional)
    * @param options The options for this request, with response observation enabled.
    */
-  createUsersWithArrayInput(user?: User[], options: RequestOptions & {
+  createUsersWithArrayInput(user: User[], options: RequestOptions & {
     observe: 'response'
   }): Observable<HttpResponse<void>>;
   /**
@@ -318,21 +325,19 @@ export class UserService {
    * @param user (optional)
    * @param options The options for this request, with event observation enabled.
    */
-  createUsersWithArrayInput(user?: User[], options: RequestOptions & {
-    observe: 'events'
-  }): Observable<HttpEvent<void>>;
+  createUsersWithArrayInput(user: User[], options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
   /**
    * createUsersWithArrayInput.
    * @param user (optional)
    * @param options The options for this request, with a blob response type.
    */
-  createUsersWithArrayInput(user?: User[], options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+  createUsersWithArrayInput(user: User[], options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
   /**
    * createUsersWithArrayInput.
    * @param user (optional)
    * @param options The options for this request, with a text response type.
    */
-  createUsersWithArrayInput(user?: User[], options: RequestOptions & { responseType: 'text' }): Observable<string>;
+  createUsersWithArrayInput(user: User[], options: RequestOptions & { responseType: 'text' }): Observable<string>;
   /**
    * createUsersWithArrayInput.
    * @param user (optional)
@@ -356,25 +361,25 @@ export class UserService {
    * @param user (optional)
    * @param options The options for this request, with response observation enabled.
    */
-  createUser(user?: User, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
+  createUser(user: User, options: RequestOptions & { observe: 'response' }): Observable<HttpResponse<void>>;
   /**
    * createUser.
    * @param user (optional)
    * @param options The options for this request, with event observation enabled.
    */
-  createUser(user?: User, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
+  createUser(user: User, options: RequestOptions & { observe: 'events' }): Observable<HttpEvent<void>>;
   /**
    * createUser.
    * @param user (optional)
    * @param options The options for this request, with a blob response type.
    */
-  createUser(user?: User, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
+  createUser(user: User, options: RequestOptions & { responseType: 'blob' }): Observable<Blob>;
   /**
    * createUser.
    * @param user (optional)
    * @param options The options for this request, with a text response type.
    */
-  createUser(user?: User, options: RequestOptions & { responseType: 'text' }): Observable<string>;
+  createUser(user: User, options: RequestOptions & { responseType: 'text' }): Observable<string>;
   /**
    * createUser.
    * @param user (optional)

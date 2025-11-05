@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
@@ -23,13 +23,23 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../services/user.service';
 
+export interface UserForm {
+  id: FormControl<number | null>;
+  username: FormControl<string | null>;
+  firstName: FormControl<string | null>;
+  lastName: FormControl<string | null>;
+  email: FormControl<string | null>;
+  password: FormControl<string | null>;
+  phone: FormControl<string | null>;
+  userStatus: FormControl<number | null>;
+}
+
 @Component({
   selector: 'app-user-form',
   standalone: true,
   imports: [
-    CommonModule,
-    RouterModule,
     ReactiveFormsModule,
+    RouterModule,
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
@@ -55,16 +65,16 @@ import { UserService } from '../../../services/user.service';
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss'
 })
-class UserFormComponent implements OnInit, OnDestroy {
+export class UserFormComponent implements OnInit, OnDestroy {
   readonly fb = inject(FormBuilder);
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
   readonly snackBar = inject(MatSnackBar);
   readonly userService: UserService = inject(UserService);
-  form!: FormGroup;
+  form!: FormGroup<UserForm>;
   id = signal<string | null>(null);
   isEditMode = computed(() => !!this.id());
-  formTitle = computed(() => this.isEditMode() ? `Edit ${resource.modelName}` : `Create ${resource.modelName}`);
+  formTitle = computed(() => this.isEditMode() ? 'Edit User' : 'Create User');
   subscriptions: Subscription[] = [];
 
   ngOnInit() {
@@ -73,22 +83,22 @@ class UserFormComponent implements OnInit, OnDestroy {
     if (id) {
       this.id.set(id);
       const sub = this.userService.getUserByName(id).subscribe(entity => {
-        this.form.patchValue(entity);
+        this.form.patchValue(entity as any);
       });
       this.subscriptions.push(sub);
     }
   }
 
   private initForm() {
-    this.form = this.fb.group({
-      'id': this.fb.control(null),
-      'username': this.fb.control(null),
-      'firstName': this.fb.control(null),
-      'lastName': this.fb.control(null),
-      'email': this.fb.control(null),
-      'password': this.fb.control(null),
-      'phone': this.fb.control(null),
-      'userStatus': this.fb.control(null)
+    this.form = new FormGroup<UserForm>({
+      'id': new FormControl(null),
+      'username': new FormControl(null),
+      'firstName': new FormControl(null),
+      'lastName': new FormControl(null),
+      'email': new FormControl(null),
+      'password': new FormControl(null),
+      'phone': new FormControl(null),
+      'userStatus': new FormControl(null)
     });
   }
 

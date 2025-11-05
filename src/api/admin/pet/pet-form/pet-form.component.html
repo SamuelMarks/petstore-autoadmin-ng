@@ -3,6 +3,23 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="admin-form-fields">
       <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput="" formControlName="name" type="text"/>
+        <mat-error>
+          @if (form.get('name')?.hasError('required')) {
+            This field is required.
+          }
+        </mat-error>
+      </mat-form-field>
+      <div class="admin-radio-group">
+        <label class="mat-label">Status</label>
+        <mat-radio-group formControlName="status">
+          @for (option of statusOptions; track option) {
+            <mat-radio-button [value]="option">{{ option }}</mat-radio-button>
+          }
+        </mat-radio-group>
+      </div>
+      <mat-form-field>
         <mat-label>Id</mat-label>
         <input matInput="" formControlName="id" type="number"/>
       </mat-form-field>
@@ -17,15 +34,6 @@
           <input matInput="" formControlName="name" type="text"/>
         </mat-form-field>
       </div>
-      <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput="" formControlName="name" type="text"/>
-        <mat-error>
-          @if (form.get('name')?.hasError('required')) {
-            This field is required.
-          }
-        </mat-error>
-      </mat-form-field>
       <mat-form-field>
         <mat-label>PhotoUrls</mat-label>
         <mat-chip-grid formControlName="photoUrls" #chipGrid_photoUrls="">
@@ -47,14 +55,6 @@
           }
         </mat-chip-grid>
       </mat-form-field>
-      <div class="admin-radio-group">
-        <label class="mat-label">Status</label>
-        <mat-radio-group formControlName="status">
-          @for (option of statusOptions; track option) {
-            <mat-radio-button [value]="option">{{ option }}</mat-radio-button>
-          }
-        </mat-radio-group>
-      </div>
     </div>
     <div class="admin-form-actions">
       <button mat-stroked-button="" type="button" (click)="onCancel()">Cancel</button>
