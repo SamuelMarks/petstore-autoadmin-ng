@@ -1,25 +1,7 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { CommonModule } from "@angular/common";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { MatSelectModule } from "@angular/material/select";
-import { MatRadioModule } from "@angular/material/radio";
-import { MatChipsModule } from "@angular/material/chips";
-import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatNativeDateModule } from "@angular/material/core";
-import { MatSliderModule } from "@angular/material/slider";
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
-import { MatTableModule } from "@angular/material/table";
-import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatSortModule } from "@angular/material/sort";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatTooltipModule } from "@angular/material/tooltip";
-import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../services/user.service';
 
@@ -37,44 +19,30 @@ export interface UserForm {
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    RouterModule,
-    CommonModule,
-    RouterModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatChipsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatSliderModule,
-    MatButtonToggleModule,
-    MatSnackBarModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressBarModule,
-    MatTooltipModule,
-    MatToolbarModule
-  ],
+  imports: [ReactiveFormsModule, RouterModule, ...commonStandaloneImports.map(a => a[0])],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss'
 })
 export class UserFormComponent implements OnInit, OnDestroy {
+  /** Injects Angular's FormBuilder service. */
   readonly fb = inject(FormBuilder);
+  /** Provides access to information about a route associated with a component. */
   readonly route = inject(ActivatedRoute);
+  /** Provides navigation and URL manipulation capabilities. */
   readonly router = inject(Router);
+  /** Service to dispatch Material Design snack bar messages. */
   readonly snackBar = inject(MatSnackBar);
+  /** The generated service for the 'user' resource. */
   readonly userService: UserService = inject(UserService);
+  /** The main reactive form group for this component. */
   form!: FormGroup<UserForm>;
+  /** Holds the ID of the resource being edited, or null for creation. */
   id = signal<string | null>(null);
+  /** A computed signal that is true if the form is in edit mode. */
   isEditMode = computed(() => !!this.id());
+  /** A computed signal for the form's title. */
   formTitle = computed(() => this.isEditMode() ? 'Edit User' : 'Create User');
+  /** A collection of subscriptions to be unsubscribed on component destruction. */
   subscriptions: Subscription[] = [];
 
   ngOnInit() {
@@ -91,14 +59,14 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   private initForm() {
     this.form = new FormGroup<UserForm>({
-      'id': new FormControl(null),
-      'username': new FormControl(null),
-      'firstName': new FormControl(null),
-      'lastName': new FormControl(null),
-      'email': new FormControl(null),
-      'password': new FormControl(null),
-      'phone': new FormControl(null),
-      'userStatus': new FormControl(null)
+      'id': new FormControl<number | null>(null),
+      'username': new FormControl<string | null>(null),
+      'firstName': new FormControl<string | null>(null),
+      'lastName': new FormControl<string | null>(null),
+      'email': new FormControl<string | null>(null),
+      'password': new FormControl<string | null>(null),
+      'phone': new FormControl<string | null>(null),
+      'userStatus': new FormControl<number | null>(null)
     });
   }
 

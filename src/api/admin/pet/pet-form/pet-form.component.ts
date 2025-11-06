@@ -1,37 +1,22 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { CommonModule } from "@angular/common";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { MatSelectModule } from "@angular/material/select";
-import { MatRadioModule } from "@angular/material/radio";
-import { MatChipsModule } from "@angular/material/chips";
-import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatNativeDateModule } from "@angular/material/core";
-import { MatSliderModule } from "@angular/material/slider";
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
-import { MatTableModule } from "@angular/material/table";
-import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatSortModule } from "@angular/material/sort";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatTooltipModule } from "@angular/material/tooltip";
-import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Subscription } from 'rxjs';
 import { PetService } from '../../../services/pet.service';
 
 export interface PetForm {
-  additionalMetadata: FormControl<any | null>;
+  additionalMetadata: FormControl<string | null>;
   file: FormControl<any | null>;
-  name: FormControl<string | null>;
-  status: FormControl<'available' | 'pending' | 'sold' | null>;
+  code: FormControl<number | null>;
+  type: FormControl<string | null>;
+  message: FormControl<string | null>;
   id: FormControl<number | null>;
   category: FormGroup<CategoryForm>;
+  name: FormControl<string | null>;
   photoUrls: FormArray<FormControl<string | null>>;
   tags: FormArray<FormControl<Tag | null>>;
+  status: FormControl<string | null>;
 }
 
 interface CategoryForm {
@@ -42,46 +27,31 @@ interface CategoryForm {
 @Component({
   selector: 'app-pet-form',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    RouterModule,
-    CommonModule,
-    RouterModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatChipsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatSliderModule,
-    MatButtonToggleModule,
-    MatSnackBarModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressBarModule,
-    MatTooltipModule,
-    MatToolbarModule
-  ],
+  imports: [ReactiveFormsModule, RouterModule, ...commonStandaloneImports.map(a => a[0])],
   templateUrl: './pet-form.component.html',
   styleUrl: './pet-form.component.scss'
 })
 export class PetFormComponent implements OnInit, OnDestroy {
+  /** Injects Angular's FormBuilder service. */
   readonly fb = inject(FormBuilder);
+  /** Provides access to information about a route associated with a component. */
   readonly route = inject(ActivatedRoute);
+  /** Provides navigation and URL manipulation capabilities. */
   readonly router = inject(Router);
+  /** Service to dispatch Material Design snack bar messages. */
   readonly snackBar = inject(MatSnackBar);
+  /** The generated service for the 'pet' resource. */
   readonly petService: PetService = inject(PetService);
+  /** The main reactive form group for this component. */
   form!: FormGroup<PetForm>;
+  /** Holds the ID of the resource being edited, or null for creation. */
   id = signal<string | null>(null);
+  /** A computed signal that is true if the form is in edit mode. */
   isEditMode = computed(() => !!this.id());
+  /** A computed signal for the form's title. */
   formTitle = computed(() => this.isEditMode() ? 'Edit Pet' : 'Create Pet');
+  /** A collection of subscriptions to be unsubscribed on component destruction. */
   subscriptions: Subscription[] = [];
-  readonly StatusOptions = ["available", "pending", "sold"];
 
   ngOnInit() {
     this.initForm();
@@ -97,17 +67,20 @@ export class PetFormComponent implements OnInit, OnDestroy {
 
   private initForm() {
     this.form = new FormGroup<PetForm>({
-      'additionalMetadata': new FormControl(null),
-      'file': new FormControl(null),
-      'name': new FormControl(null, [Validators.required]),
-      'status': new FormControl(null),
-      'id': new FormControl(null),
+      'additionalMetadata': new FormControl<string | null>(null),
+      'file': new FormControl<any | null>(null),
+      'code': new FormControl<number | null>(null),
+      'type': new FormControl<string | null>(null),
+      'message': new FormControl<string | null>(null),
+      'id': new FormControl<number | null>(null),
       'category': this.fb.group({
-        'id': new FormControl(null),
-        'name': new FormControl(null)
+        'id': new FormControl<number | null>(null),
+        'name': new FormControl<string | null>(null)
       }),
+      'name': new FormControl<string | null>(null, [Validators.required]),
       'photoUrls': this.fb.array([]),
-      'tags': this.fb.array([])
+      'tags': this.fb.array([]),
+      'status': new FormControl<string | null>(null)
     });
   }
 
