@@ -5,18 +5,18 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { Subscription } from 'rxjs';
 import { PetService } from '../../../services/pet.service';
 
-export interface PetForm {
-  additionalMetadata: FormControl<string | null>;
+export interface ApiResponseForm {
+  additionalMetadata: FormControl<any | null>;
   file: FormControl<any | null>;
+  name: FormControl<string | null>;
+  status: FormControl<'available' | 'pending' | 'sold' | null>;
   code: FormControl<number | null>;
   type: FormControl<string | null>;
   message: FormControl<string | null>;
   id: FormControl<number | null>;
   category: FormGroup<CategoryForm>;
-  name: FormControl<string | null>;
   photoUrls: FormArray<FormControl<string | null>>;
   tags: FormArray<FormControl<Tag | null>>;
-  status: FormControl<string | null>;
 }
 
 interface CategoryForm {
@@ -31,7 +31,7 @@ interface CategoryForm {
   templateUrl: './pet-form.component.html',
   styleUrl: './pet-form.component.scss'
 })
-export class PetFormComponent implements OnInit, OnDestroy {
+export class ApiResponseFormComponent implements OnInit, OnDestroy {
   /** Injects Angular's FormBuilder service. */
   readonly fb = inject(FormBuilder);
   /** Provides access to information about a route associated with a component. */
@@ -43,15 +43,16 @@ export class PetFormComponent implements OnInit, OnDestroy {
   /** The generated service for the 'pet' resource. */
   readonly petService: PetService = inject(PetService);
   /** The main reactive form group for this component. */
-  form!: FormGroup<PetForm>;
+  form!: FormGroup<ApiResponseForm>;
   /** Holds the ID of the resource being edited, or null for creation. */
   id = signal<string | null>(null);
   /** A computed signal that is true if the form is in edit mode. */
   isEditMode = computed(() => !!this.id());
   /** A computed signal for the form's title. */
-  formTitle = computed(() => this.isEditMode() ? 'Edit Pet' : 'Create Pet');
+  formTitle = computed(() => this.isEditMode() ? 'Edit ApiResponse' : 'Create ApiResponse');
   /** A collection of subscriptions to be unsubscribed on component destruction. */
   subscriptions: Subscription[] = [];
+  readonly StatusOptions = ["available", "pending", "sold"];
 
   ngOnInit() {
     this.initForm();
@@ -66,9 +67,11 @@ export class PetFormComponent implements OnInit, OnDestroy {
   }
 
   private initForm() {
-    this.form = new FormGroup<PetForm>({
-      'additionalMetadata': new FormControl<string | null>(null),
+    this.form = new FormGroup<ApiResponseForm>({
+      'additionalMetadata': new FormControl<any | null>(null),
       'file': new FormControl<any | null>(null),
+      'name': new FormControl<string | null>(null, [Validators.required]),
+      'status': new FormControl<'available' | 'pending' | 'sold' | null>(null),
       'code': new FormControl<number | null>(null),
       'type': new FormControl<string | null>(null),
       'message': new FormControl<string | null>(null),
@@ -77,10 +80,8 @@ export class PetFormComponent implements OnInit, OnDestroy {
         'id': new FormControl<number | null>(null),
         'name': new FormControl<string | null>(null)
       }),
-      'name': new FormControl<string | null>(null, [Validators.required]),
       'photoUrls': this.fb.array([]),
-      'tags': this.fb.array([]),
-      'status': new FormControl<string | null>(null)
+      'tags': this.fb.array([])
     });
   }
 
@@ -96,12 +97,12 @@ export class PetFormComponent implements OnInit, OnDestroy {
     const action$ = this.petService.addPet(finalPayload);
     const sub = action$.subscribe({
       next: () => {
-        this.snackBar.open('Pet saved successfully!', 'Close', { duration: 3000 });
+        this.snackBar.open('ApiResponse saved successfully!', 'Close', { duration: 3000 });
         this.router.navigate(['../'], { relativeTo: this.route });
       },
       error: (err) => {
-        console.error('Error saving Pet', err);
-        this.snackBar.open('Error saving Pet', 'Close', { duration: 5000, panelClass: 'error-snackbar' });
+        console.error('Error saving ApiResponse', err);
+        this.snackBar.open('Error saving ApiResponse', 'Close', { duration: 5000, panelClass: 'error-snackbar' });
       }
     });
     this.subscriptions.push(sub);
