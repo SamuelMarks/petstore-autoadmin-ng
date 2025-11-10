@@ -77,7 +77,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     const finalPayload = this.form.getRawValue();
     const action$ = this.isEditMode()
       ? this.userService.updateUser(this.id()!, finalPayload)
-      : this.userService.createUser(finalPayload);
+      : this.userService.createUsersWithListInput(finalPayload);
     const sub = action$.subscribe({
       next: () => {
         this.snackBar.open('User saved successfully!', 'Close', { duration: 3000 });
