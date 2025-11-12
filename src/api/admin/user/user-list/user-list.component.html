@@ -9,42 +9,42 @@
       <ng-container matColumnDef="id">
         <!-- Id Column -->
         <th mat-header-cell="" *matHeaderCellDef="">Id</th>
-        <td mat-cell="" *matCellDef="let row">{{ row.id }}</td>
+        <td mat-cell="" *matCellDef="let row">{{row.id}}</td>
       </ng-container>
       <ng-container matColumnDef="username">
         <!-- Username Column -->
         <th mat-header-cell="" *matHeaderCellDef="">Username</th>
-        <td mat-cell="" *matCellDef="let row">{{ row.username }}</td>
+        <td mat-cell="" *matCellDef="let row">{{row.username}}</td>
       </ng-container>
       <ng-container matColumnDef="firstName">
         <!-- FirstName Column -->
         <th mat-header-cell="" *matHeaderCellDef="">FirstName</th>
-        <td mat-cell="" *matCellDef="let row">{{ row.firstName }}</td>
+        <td mat-cell="" *matCellDef="let row">{{row.firstName}}</td>
       </ng-container>
       <ng-container matColumnDef="lastName">
         <!-- LastName Column -->
         <th mat-header-cell="" *matHeaderCellDef="">LastName</th>
-        <td mat-cell="" *matCellDef="let row">{{ row.lastName }}</td>
+        <td mat-cell="" *matCellDef="let row">{{row.lastName}}</td>
       </ng-container>
       <ng-container matColumnDef="email">
         <!-- Email Column -->
         <th mat-header-cell="" *matHeaderCellDef="">Email</th>
-        <td mat-cell="" *matCellDef="let row">{{ row.email }}</td>
+        <td mat-cell="" *matCellDef="let row">{{row.email}}</td>
       </ng-container>
       <ng-container matColumnDef="password">
         <!-- Password Column -->
         <th mat-header-cell="" *matHeaderCellDef="">Password</th>
-        <td mat-cell="" *matCellDef="let row">{{ row.password }}</td>
+        <td mat-cell="" *matCellDef="let row">{{row.password}}</td>
       </ng-container>
       <ng-container matColumnDef="phone">
         <!-- Phone Column -->
         <th mat-header-cell="" *matHeaderCellDef="">Phone</th>
-        <td mat-cell="" *matCellDef="let row">{{ row.phone }}</td>
+        <td mat-cell="" *matCellDef="let row">{{row.phone}}</td>
       </ng-container>
       <ng-container matColumnDef="userStatus">
         <!-- UserStatus Column -->
         <th mat-header-cell="" *matHeaderCellDef="">UserStatus</th>
-        <td mat-cell="" *matCellDef="let row">{{ row.userStatus }}</td>
+        <td mat-cell="" *matCellDef="let row">{{row.userStatus}}</td>
       </ng-container>
       <ng-container matColumnDef="actions">
         <th mat-header-cell="" *matHeaderCellDef="">Actions</th>
@@ -63,7 +63,6 @@
         <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data matching the filter</td>
       </tr>
     </table>
-    <mat-paginator [length]="totalItems()" [pageSizeOptions]="[5, 10, 25, 100]"
-                   aria-label="Select page"></mat-paginator>
+    <mat-paginator [length]="totalItems()" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page"></mat-paginator>
   </div>
 </div>
