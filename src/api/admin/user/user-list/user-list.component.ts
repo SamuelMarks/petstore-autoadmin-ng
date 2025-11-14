@@ -126,6 +126,38 @@ export class UserListComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  createUsersWithListInput() {
+    const sub = this.userService.createUsersWithListInput().pipe(
+      catchError((err: any) => {
+        console.error('Action failed', err);
+        this.snackBar.open('Action failed', 'Close', { duration: 5000, panelClass: 'error-snackbar' });
+        return of(null);
+      })
+    ).subscribe(response => {
+      if (response !== null) {
+        this.snackBar.open('Action successful!', 'Close', { duration: 3000 });
+        this.refresh();
+      }
+    });
+    this.subscriptions.push(sub);
+  }
+
+  createUsersWithArrayInput() {
+    const sub = this.userService.createUsersWithArrayInput().pipe(
+      catchError((err: any) => {
+        console.error('Action failed', err);
+        this.snackBar.open('Action failed', 'Close', { duration: 5000, panelClass: 'error-snackbar' });
+        return of(null);
+      })
+    ).subscribe(response => {
+      if (response !== null) {
+        this.snackBar.open('Action successful!', 'Close', { duration: 3000 });
+        this.refresh();
+      }
+    });
+    this.subscriptions.push(sub);
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }

@@ -1,0 +1,52 @@
+<div class="admin-form-container">
+  <h1>{{ formTitle }}</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="admin-form-fields">
+      <mat-form-field>
+        <mat-label>Id</mat-label>
+        <input matInput="" formControlName="id" type="number"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>PetId</mat-label>
+        <input matInput="" formControlName="petId" type="number"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Quantity</mat-label>
+        <input matInput="" formControlName="quantity" type="number"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>ShipDate</mat-label>
+        <input matInput="" [matDatepicker]="picker_shipDate" formControlName="shipDate"/>
+        <mat-datepicker-toggle matSuffix="" [for]="picker_shipDate"></mat-datepicker-toggle>
+        <mat-datepicker #picker_shipDate=""></mat-datepicker>
+      </mat-form-field>
+      <div class="admin-radio-group">
+        <label class="mat-label">Status</label>
+        <mat-radio-group formControlName="status">
+          @for (option of statusOptions; track option) {
+            <mat-radio-button [value]="option">{{ option }}</mat-radio-button>
+          }
+        </mat-radio-group>
+      </div>
+      <div class="admin-toggle-group">
+        <label class="mat-label">Complete</label>
+        <mat-button-toggle-group formControlName="complete">
+          <mat-button-toggle value="true">Yes</mat-button-toggle>
+          <mat-button-toggle value="false">No</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+    <div class="admin-form-actions">
+      <button mat-stroked-button="" type="button" (click)="onCancel()">Cancel</button>
+      <button mat-flat-button="" color="primary" type="submit" [disabled]="form.invalid || form.pristine">
+
+        @if (isEditMode()) {
+          <span>Save Changes</span>
+        } @else {
+          <span>Create Order</span>
+        }
+
+      </button>
+    </div>
+  </form>
+</div>

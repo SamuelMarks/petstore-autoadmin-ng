@@ -50,7 +50,7 @@ describe('StoreService', () => {
         "id": 123,
         "petId": 123,
         "quantity": 123,
-        "shipDate": "2025-11-13T20:12:46.054Z",
+        "shipDate": "2025-11-14T08:18:31.806Z",
         "status": "string-value",
         "complete": true
       };
@@ -58,7 +58,7 @@ describe('StoreService', () => {
         "id": 123,
         "petId": 123,
         "quantity": 123,
-        "shipDate": "2025-11-13T20:12:46.055Z",
+        "shipDate": "2025-11-14T08:18:31.807Z",
         "status": "string-value",
         "complete": true
       };
@@ -73,7 +73,7 @@ describe('StoreService', () => {
         "id": 123,
         "petId": 123,
         "quantity": 123,
-        "shipDate": "2025-11-13T20:12:46.055Z",
+        "shipDate": "2025-11-14T08:18:31.807Z",
         "status": "string-value",
         "complete": true
       };
@@ -92,7 +92,7 @@ describe('StoreService', () => {
         "id": 123,
         "petId": 123,
         "quantity": 123,
-        "shipDate": "2025-11-13T20:12:46.055Z",
+        "shipDate": "2025-11-14T08:18:31.807Z",
         "status": "string-value",
         "complete": true
       };

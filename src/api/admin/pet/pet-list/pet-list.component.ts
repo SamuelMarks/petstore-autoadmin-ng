@@ -108,6 +108,10 @@ export class PetListComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  onCreate() {
+    this.router.navigate(['new'], { relativeTo: this.route });
+  }
+
   onDelete(id: string) {
     if (confirm('Are you sure you want to delete this item?')) {
       const sub = this.petService.deletePet(id).subscribe(() => {
@@ -120,22 +124,6 @@ export class PetListComponent implements AfterViewInit, OnDestroy {
 
   uploadFile(id: string) {
     const sub = this.petService.uploadFile(id).pipe(
-      catchError((err: any) => {
-        console.error('Action failed', err);
-        this.snackBar.open('Action failed', 'Close', { duration: 5000, panelClass: 'error-snackbar' });
-        return of(null);
-      })
-    ).subscribe(response => {
-      if (response !== null) {
-        this.snackBar.open('Action successful!', 'Close', { duration: 3000 });
-        this.refresh();
-      }
-    });
-    this.subscriptions.push(sub);
-  }
-
-  addPet() {
-    const sub = this.petService.addPet().pipe(
       catchError((err: any) => {
         console.error('Action failed', err);
         this.snackBar.open('Action failed', 'Close', { duration: 5000, panelClass: 'error-snackbar' });
